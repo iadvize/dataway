@@ -6,7 +6,7 @@ module.exports = {
     ],
     testEnvironment: 'node',
     testRegex: [
-      'tests-api/.*\\.ts$',
+      'test/.*\\.ts$',
     ],
     transform: {
       '^.+\\.ts$': 'ts-jest',
