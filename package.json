@@ -1,0 +1,24 @@
+{
+  "name": "remote-data",
+  "version": "1.0.0",
+  "main": "dist/remote-data.cjs.js",
+  "module": "dist/remote-data.esm.js",
+  "browser": "dist/remote-data.umd.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
+    "test": "ts-node test/test.ts",
+    "pretest": "npm run build"
+  },
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "rollup": "^1.12.4",
+    "rollup-plugin-commonjs": "^10.0.0",
+    "rollup-plugin-node-resolve": "^5.0.0",
+    "rollup-plugin-typescript2": "^0.21.1",
+    "typescript": "^3.4.5"
+  }
+}
