@@ -9,7 +9,8 @@
     "build": "rollup -c",
     "dev": "rollup -c -w",
     "test": "jest",
-    "pretest": "npm run build"
+    "pretest": "npm run build",
+    "prettier-check": "prettier --check '**/*.ts'"
   },
   "files": [
     "dist"
@@ -17,6 +18,7 @@
   "devDependencies": {
     "@types/jest": "^24.0.13",
     "jest": "^24.8.0",
+    "prettier": "1.17.1",
     "rollup": "^1.12.4",
     "rollup-plugin-commonjs": "^10.0.0",
     "rollup-plugin-node-resolve": "^5.0.0",
