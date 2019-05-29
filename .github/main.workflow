@@ -1,5 +1,6 @@
 workflow "Build and test" {
   resolves = [
+    "Prettier",
     "Publish",
   ]
   on = "push"
