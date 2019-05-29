@@ -1,5 +1,5 @@
 workflow "Build and test" {
-  resolves = ["Test"]
+  resolves = ["Test", "Prettier"]
   on = "push"
 }
 
