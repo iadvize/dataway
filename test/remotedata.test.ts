@@ -164,4 +164,42 @@ describe('Dataway', () => {
       );
     });
   });
+  it('fold', () => {
+    const notaskedvalue = 'notAsked';
+    const loadingvalue = 'loading';
+    const onError = (error: string): string => error;
+    const onSuccess = (value: string): string => value.length.toString();
+    expect(
+      notAsked<string, string>().fold(
+        notaskedvalue,
+        loadingvalue,
+        onError,
+        onSuccess,
+      ),
+    ).toEqual(notaskedvalue);
+    expect(
+      loading<string, string>().fold(
+        notaskedvalue,
+        loadingvalue,
+        onError,
+        onSuccess,
+      ),
+    ).toEqual(loadingvalue);
+    expect(
+      failure<string, string>('error loading resource').fold(
+        notaskedvalue,
+        loadingvalue,
+        onError,
+        onSuccess,
+      ),
+    ).toEqual('error loading resource');
+    expect(
+      success<string, string>('axel').fold(
+        notaskedvalue,
+        loadingvalue,
+        onError,
+        onSuccess,
+      ),
+    ).toEqual('4');
+  });
 });

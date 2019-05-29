@@ -43,6 +43,15 @@ export class NotAsked<L, A> {
     }
     return (fab.isNotAsked() ? fab : this) as any;
   }
+
+  fold<B>(
+    onNotAsked: B,
+    onLoading: B,
+    onFailure: (e: L) => B,
+    onSuccess: (a: A) => B,
+  ) {
+    return onNotAsked;
+  }
 }
 
 export class Loading<L, A> {
@@ -74,6 +83,15 @@ export class Loading<L, A> {
     }
     return (fab.isLoading() ? fab : this) as any;
   }
+
+  fold<B>(
+    onNotAsked: B,
+    onLoading: B,
+    onFailure: (e: L) => B,
+    onSuccess: (a: A) => B,
+  ) {
+    return onLoading;
+  }
 }
 
 export class Failure<L, A> {
@@ -98,6 +116,15 @@ export class Failure<L, A> {
   }
   ap<B>(fab: Dataway<L, (a: A) => B>): Dataway<L, B> {
     return (fab.isFailure() ? fab : this) as any;
+  }
+
+  fold<B>(
+    onNotAsked: B,
+    onLoading: B,
+    onFailure: (e: L) => B,
+    onSuccess: (a: A) => B,
+  ) {
+    return onFailure(this.value);
   }
 }
 
@@ -127,6 +154,14 @@ export class Success<L, A> {
       return this.map(_fab.value);
     }
     return fab as any;
+  }
+  fold<B>(
+    onNotAsked: B,
+    onLoading: B,
+    onFailure: (e: L) => B,
+    onSuccess: (a: A) => B,
+  ) {
+    return onSuccess(this.value);
   }
 }
 
@@ -171,6 +206,16 @@ export const append = <L, A, B>(
   fb: Dataway<L, B>,
 ): Dataway<L, [A, B]> => {
   return ap(fa.map((a: A) => (b: B): [A, B] => [a, b]), fb);
+};
+
+export const fold = <L, A, B>(
+  onNotAsked: B,
+  onLoading: B,
+  onFailure: (e: L) => B,
+  onSuccess: (a: A) => B,
+  fa: Dataway<L, A>,
+): B => {
+  return fa.fold(onNotAsked, onLoading, onFailure, onSuccess);
 };
 
 export const dataway: Functor2<URI> & Apply2<URI> & Applicative2<URI> = {
