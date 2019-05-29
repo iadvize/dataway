@@ -1,5 +1,6 @@
 import { Functor2 } from 'fp-ts/lib/Functor';
 import { Apply2 } from 'fp-ts/lib/Apply';
+import { Applicative2 } from 'fp-ts/lib/Applicative';
 
 declare module 'fp-ts/lib/HKT' {
   interface URI2HKT2<L, A> {
@@ -142,6 +143,8 @@ export const success = <L, A>(a: A): Dataway<L, A> => {
   return new Success(a);
 };
 
+const of = success;
+
 const ap = <L, A, B>(
   fab: Dataway<L, (a: A) => B>,
   fa: Dataway<L, A>,
@@ -170,8 +173,9 @@ export const append = <L, A, B>(
   return ap(fa.map((a: A) => (b: B): [A, B] => [a, b]), fb);
 };
 
-export const dataway: Functor2<URI> & Apply2<URI> = {
+export const dataway: Functor2<URI> & Apply2<URI> & Applicative2<URI> = {
   URI,
+  of,
   ap,
   map,
 };
