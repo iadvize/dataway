@@ -1,12 +1,12 @@
-import { Functor2 } from "fp-ts/lib/Functor";
+import { Functor2 } from 'fp-ts/lib/Functor';
 
-declare module "fp-ts/lib/HKT" {
+declare module 'fp-ts/lib/HKT' {
   interface URI2HKT2<L, A> {
     RemoteData: RemoteData<L, A>;
   }
 }
 
-export const URI = "RemoteData";
+export const URI = 'RemoteData';
 
 export type URI = typeof URI;
 
@@ -17,7 +17,7 @@ export type RemoteData<L, A> =
   | Success<L, A>;
 
 export class NotAsked<L, A> {
-  readonly _tag = "NotAsked";
+  readonly _tag = 'NotAsked';
   constructor() {}
   map<B>(f: (value: A) => B): RemoteData<L, B> {
     return this as any;
@@ -25,7 +25,7 @@ export class NotAsked<L, A> {
 }
 
 export class Loading<L, A> {
-  readonly _tag = "Loading";
+  readonly _tag = 'Loading';
   constructor() {}
   map<B>(f: (value: A) => B): RemoteData<L, B> {
     return this as any;
@@ -33,7 +33,7 @@ export class Loading<L, A> {
 }
 
 export class Failure<L, A> {
-  readonly _tag = "Failure";
+  readonly _tag = 'Failure';
   constructor(readonly value: L) {}
   map<B>(f: (a: A) => B): RemoteData<L, B> {
     return new Failure(this.value);
@@ -41,7 +41,7 @@ export class Failure<L, A> {
 }
 
 export class Success<L, A> {
-  readonly _tag = "Success";
+  readonly _tag = 'Success';
   constructor(readonly value: A) {}
   map<B>(f: (a: A) => B): RemoteData<L, B> {
     return new Success(f(this.value));
@@ -66,5 +66,5 @@ const map = <L, A, B>(fa: RemoteData<L, A>, f: (a: A) => B): RemoteData<L, B> =>
 
 export const remoteData: Functor2<URI> = {
   URI,
-  map
+  map,
 };

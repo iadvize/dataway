@@ -10,7 +10,8 @@
     "dev": "rollup -c -w",
     "test": "jest",
     "pretest": "npm run build",
-    "prettier-check": "prettier --check '**/*.ts'"
+    "prettier-check": "prettier --check '**/*.ts'",
+    "prettier-fix": "prettier --write '**/*.ts'"
   },
   "files": [
     "dist"
