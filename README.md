@@ -19,23 +19,21 @@ Imagine that our application rely on a webservice that provide us with a list of
 The different algebras used can be used in the following fashion:
 Using the instance method
 ```javascript
-const f = (s: string): number => s.length;
-success('abc').map(f)
+const stringLength = string => string.length;
+success('abc').map(stringLength)
 // => Success(3)
 ```
 
 The provided map implementation
 ```javascript
-const f = (s: string): number => s.length;
-remoteData.map(success('abc'), f);
+remoteData.map(success('abc'), stringLength);
 // => Success(3)
 ```
 
 Or any fantasyland complient library
 ```javascript
 import map from 'ramda/map';
-const f = (s: string): number => s.length;
-map(success('abc'), f);
+map(success('abc'), stringLength);
 // => Success(3)
 ```
 
@@ -45,13 +43,13 @@ map(success('abc'), f);
 The functor interface allow you to map over the `Success` value of `RemoteData`.
 
 ```javascript
-const f = (s: string): number => s.length;
-remoteData.map(success('abc'), f);
+const stringLength = string => string.length;
+remoteData.map(success('abc'), stringLength);
 // => Success(3)
-remoteData.map(failure('xyz'), f);
+remoteData.map(failure('xyz'), stringLength);
 // => Failure('xyz')
-remoteData.map(loading(), f);
+remoteData.map(loading(), stringLength);
 // => Loading()
-remoteData.map(notAsked(), f);
+remoteData.map(notAsked(), stringLength);
 // => NotAsked()
 ```
