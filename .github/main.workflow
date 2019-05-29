@@ -11,7 +11,7 @@ action "Build" {
 action "Prettier" {
   uses = "actions/npm@59b64a598378f31e49cb76f27d6f3312b582f680",
   needs = ["Build"],
-  args = "prettier-check"
+  args = "run prettier-check"
 }
 
 action "Test" {
