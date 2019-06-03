@@ -137,4 +137,31 @@ describe('Dataway', () => {
       });
     });
   });
+
+  describe('Applicative', () => {
+    it('follow Identity law', () => {
+      expect(
+        dataway.ap(
+          dataway.of<string, (a: string) => string>(a => a),
+          success('abc'),
+        ),
+      ).toEqual(success('abc'));
+    });
+    it('follow Homomorphism law', () => {
+      expect(dataway.ap(dataway.of(success), dataway.of('abc'))).toEqual(
+        dataway.of(success('abc')),
+      );
+    });
+    it('follow Interchange law', () => {
+      const f = (s: string): number => s.length;
+      expect(dataway.ap(success(f), dataway.of('abc'))).toEqual(
+        dataway.ap(
+          dataway.of<string, (a: (b: string) => number) => number>(ab =>
+            ab('abc'),
+          ),
+          success(f),
+        ),
+      );
+    });
+  });
 });
