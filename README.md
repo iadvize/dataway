@@ -1,7 +1,7 @@
-# RemoteData
+# Dataway
 
 ## Introduction
-`RemoteData` is an Algebra meant to represent any fetched data,
+`Dataway` is an Algebra meant to represent any fetched data,
 as such it streamline interaction with a fetched data in any of the following state, `NotAsked`, `Loading`, `Failure`, `Success`.
 
 This allow you to interact safely with all those state without having to write multiple conditionnal branch tourought your code.
@@ -26,7 +26,7 @@ success('abc').map(stringLength)
 
 The provided map implementation
 ```javascript
-remoteData.map(success('abc'), stringLength);
+dataway.map(success('abc'), stringLength);
 // => Success(3)
 ```
 
@@ -40,22 +40,22 @@ map(success('abc'), stringLength);
 # API
 
 ## Functor
-The functor interface allow you to map over the `Success` value of `RemoteData`.
+The functor interface allow you to map over the `Success` value of `Dataway`.
 
 ```javascript
 const stringLength = string => string.length;
-remoteData.map(success('abc'), stringLength);
+dataway.map(success('abc'), stringLength);
 // => Success(3)
-remoteData.map(failure('xyz'), stringLength);
+dataway.map(failure('xyz'), stringLength);
 // => Failure('xyz')
-remoteData.map(loading(), stringLength);
+dataway.map(loading(), stringLength);
 // => Loading()
-remoteData.map(notAsked(), stringLength);
+dataway.map(notAsked(), stringLength);
 // => NotAsked()
 ```
 
 ## Apply
-The apply interface allow you to safely apply RemoteData value to another one
+The apply interface allow you to safely apply Dataway value to another one
 ```javascript
 const f = (s1: string, s2: string) => `${s1}${s2}`;
 success('abc').map(f).ap(success('def'));
@@ -69,7 +69,7 @@ success('abc').map(f).ap(notAsked());
 ```
 
 You can note a pattern here that will apply to many function down this documentation.
-when composing with multiple `RemoteData` the following rules apply in order:
+when composing with multiple `Dataway` the following rules apply in order:
 - only if all are `success`, the result is a `success`.
 - if one is in `failure`, the result is a `failure`.
 - the first `failure` will be used to generate the end result `failure`.
@@ -79,8 +79,8 @@ when composing with multiple `RemoteData` the following rules apply in order:
 `Apply` is a very interesting tool from wich you can implement many usefull function.
 Append
 ```javascript
-const append = (remoteData1, remoteData2) => 
-    remoteData1.map(value1 => value2 => [value1, value2]).ap(remoteData2);
+const append = (dataway1, dataway2) => 
+    dataway1.map(value1 => value2 => [value1, value2]).ap(dataway2);
 append(success('abc'), success('def'));
 // => success(['abc', 'def'])
 append(success('abc'), failure('xyz'));
@@ -89,8 +89,8 @@ append(success('abc'), failure('xyz'));
 Map2
 ```javascript
 const f = s1 => s2 => `${s1}${s2}`;
-const map2 = (f, remoteData1, remoteData2) =>
-    ap(remoteData1.map(f), remoteData2);
+const map2 = (f, dataway1, dataway2) =>
+    ap(dataway1.map(f), dataway2);
 
 map2(f, success('abc'), success('def'));
 // => success('abcdef')

@@ -1,9 +1,9 @@
 {
-  "name": "remote-data",
+  "name": "dataway",
   "version": "1.0.0",
-  "main": "dist/remote-data.cjs.js",
-  "module": "dist/remote-data.esm.js",
-  "browser": "dist/remote-data.umd.js",
+  "main": "dist/dataway.cjs.js",
+  "module": "dist/dataway.esm.js",
+  "browser": "dist/dataway.umd.js",
   "license": "MIT",
   "scripts": {
     "build": "rollup -c",

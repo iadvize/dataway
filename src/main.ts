@@ -3,15 +3,15 @@ import { Apply2 } from 'fp-ts/lib/Apply';
 
 declare module 'fp-ts/lib/HKT' {
   interface URI2HKT2<L, A> {
-    RemoteData: RemoteData<L, A>;
+    Dataway: Dataway<L, A>;
   }
 }
 
-export const URI = 'RemoteData';
+export const URI = 'Dataway';
 
 export type URI = typeof URI;
 
-export type RemoteData<L, A> =
+export type Dataway<L, A> =
   | NotAsked<L, A>
   | Loading<L, A>
   | Failure<L, A>
@@ -33,10 +33,10 @@ export class NotAsked<L, A> {
     return false;
   }
 
-  map<B>(f: (a: A) => B): RemoteData<L, B> {
+  map<B>(f: (a: A) => B): Dataway<L, B> {
     return this as any;
   }
-  ap<B>(fab: RemoteData<L, (a: A) => B>): RemoteData<L, B> {
+  ap<B>(fab: Dataway<L, (a: A) => B>): Dataway<L, B> {
     if (fab.isFailure()) {
       return fab as any;
     }
@@ -61,10 +61,10 @@ export class Loading<L, A> {
     return false;
   }
 
-  map<B>(f: (a: A) => B): RemoteData<L, B> {
+  map<B>(f: (a: A) => B): Dataway<L, B> {
     return this as any;
   }
-  ap<B>(fab: RemoteData<L, (a: A) => B>): RemoteData<L, B> {
+  ap<B>(fab: Dataway<L, (a: A) => B>): Dataway<L, B> {
     if (fab.isNotAsked()) {
       return notAsked();
     }
@@ -92,10 +92,10 @@ export class Failure<L, A> {
     return false;
   }
 
-  map<B>(f: (a: A) => B): RemoteData<L, B> {
+  map<B>(f: (a: A) => B): Dataway<L, B> {
     return this as any;
   }
-  ap<B>(fab: RemoteData<L, (a: A) => B>): RemoteData<L, B> {
+  ap<B>(fab: Dataway<L, (a: A) => B>): Dataway<L, B> {
     return (fab.isFailure() ? fab : this) as any;
   }
 }
@@ -117,10 +117,10 @@ export class Success<L, A> {
     return true;
   }
 
-  map<B>(f: (a: A) => B): RemoteData<L, B> {
+  map<B>(f: (a: A) => B): Dataway<L, B> {
     return new Success(f(this.value));
   }
-  ap<B>(fab: RemoteData<L, (a: A) => B>): RemoteData<L, B> {
+  ap<B>(fab: Dataway<L, (a: A) => B>): Dataway<L, B> {
     if (fab.isSuccess()) {
       const _fab = fab as Success<L, (a: A) => B>;
       return this.map(_fab.value);
@@ -129,48 +129,48 @@ export class Success<L, A> {
   }
 }
 
-export const notAsked = <L, A>(): RemoteData<L, A> => {
+export const notAsked = <L, A>(): Dataway<L, A> => {
   return new NotAsked();
 };
-export const loading = <L, A>(): RemoteData<L, A> => {
+export const loading = <L, A>(): Dataway<L, A> => {
   return new Loading();
 };
-export const failure = <L, A>(l: L): RemoteData<L, A> => {
+export const failure = <L, A>(l: L): Dataway<L, A> => {
   return new Failure(l);
 };
-export const success = <L, A>(a: A): RemoteData<L, A> => {
+export const success = <L, A>(a: A): Dataway<L, A> => {
   return new Success(a);
 };
 
 const ap = <L, A, B>(
-  fab: RemoteData<L, (a: A) => B>,
-  fa: RemoteData<L, A>,
-): RemoteData<L, B> => fa.ap(fab);
+  fab: Dataway<L, (a: A) => B>,
+  fa: Dataway<L, A>,
+): Dataway<L, B> => fa.ap(fab);
 
-const map = <L, A, B>(fa: RemoteData<L, A>, f: (a: A) => B): RemoteData<L, B> =>
+const map = <L, A, B>(fa: Dataway<L, A>, f: (a: A) => B): Dataway<L, B> =>
   fa.map(f);
 
 export const map2 = <L, A, B, C>(
   f: (a: A) => (b: B) => C,
-  fa: RemoteData<L, A>,
-  fb: RemoteData<L, B>,
-): RemoteData<L, C> => ap(fa.map(f), fb);
+  fa: Dataway<L, A>,
+  fb: Dataway<L, B>,
+): Dataway<L, C> => ap(fa.map(f), fb);
 
 export const map3 = <L, A, B, C, D>(
   f: (a: A) => (b: B) => (c: C) => D,
-  fa: RemoteData<L, A>,
-  fb: RemoteData<L, B>,
-  fc: RemoteData<L, C>,
-): RemoteData<L, D> => ap(ap(fa.map(f), fb), fc);
+  fa: Dataway<L, A>,
+  fb: Dataway<L, B>,
+  fc: Dataway<L, C>,
+): Dataway<L, D> => ap(ap(fa.map(f), fb), fc);
 
 export const append = <L, A, B>(
-  fa: RemoteData<L, A>,
-  fb: RemoteData<L, B>,
-): RemoteData<L, [A, B]> => {
+  fa: Dataway<L, A>,
+  fb: Dataway<L, B>,
+): Dataway<L, [A, B]> => {
   return ap(fa.map((a: A) => (b: B): [A, B] => [a, b]), fb);
 };
 
-export const remoteData: Functor2<URI> & Apply2<URI> = {
+export const dataway: Functor2<URI> & Apply2<URI> = {
   URI,
   ap,
   map,
