@@ -8,7 +8,7 @@ export default [
 	{
 		input: 'src/main.ts',
 		output: {
-			name: 'remoteData',
+			name: 'dataway',
 			file: pkg.browser,
 			format: 'umd'
 		},
