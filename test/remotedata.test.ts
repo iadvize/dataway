@@ -1,4 +1,5 @@
 import {
+  Dataway,
   dataway,
   notAsked,
   loading,
@@ -10,22 +11,24 @@ import {
 } from '../src/main';
 
 describe('Dataway', () => {
-  it('map', () => {
-    const f = (s: string): number => s.length;
-    expect(notAsked<string, string>().map(f)).toEqual(notAsked());
-    expect(loading<string, string>().map(f)).toEqual(loading());
-    expect(failure<string, string>('xyz').map(f)).toEqual(failure('xyz'));
-    expect(success('abc').map(f)).toEqual(success(3));
+  describe('Functor', () => {
+    it('map', () => {
+      const f = (s: string): number => s.length;
+      expect(notAsked<string, string>().map(f)).toEqual(notAsked());
+      expect(loading<string, string>().map(f)).toEqual(loading());
+      expect(failure<string, string>('xyz').map(f)).toEqual(failure('xyz'));
+      expect(success('abc').map(f)).toEqual(success(3));
 
-    expect(dataway.map(notAsked<string, string>(), f)).toEqual(notAsked());
-    expect(dataway.map(loading<string, string>(), f)).toEqual(loading());
-    expect(dataway.map(failure<string, string>('xyz'), f)).toEqual(
-      failure('xyz'),
-    );
-    expect(dataway.map(success('abc'), f)).toEqual(success(3));
+      expect(dataway.map(notAsked<string, string>(), f)).toEqual(notAsked());
+      expect(dataway.map(loading<string, string>(), f)).toEqual(loading());
+      expect(dataway.map(failure<string, string>('xyz'), f)).toEqual(
+        failure('xyz'),
+      );
+      expect(dataway.map(success('abc'), f)).toEqual(success(3));
+    });
   });
 
-  describe('ap', () => {
+  describe('Apply', () => {
     const f = (s: string): number => s.length;
     it('return failure if any of the Dataway fail', () => {
       expect(
@@ -164,6 +167,15 @@ describe('Dataway', () => {
       );
     });
   });
+
+  describe('Chain', () => {
+    it('follow Identity law', () => {
+      const f = <A, B>(s: A): Dataway<string, B> => failure('error');
+      expect(dataway.chain(dataway.of('abc'), f)).toEqual(f('abc'));
+      expect(dataway.chain(success('abc'), dataway.of)).toEqual(success('abc'));
+    });
+  });
+
   it('fold', () => {
     const notaskedvalue = 'notAsked';
     const loadingvalue = 'loading';

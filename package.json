@@ -1,6 +1,6 @@
 {
   "name": "dataway",
-  "version": "1.0.0",
+  "version": "1.0.0-beta.0",
   "main": "dist/dataway.cjs.js",
   "module": "dist/dataway.esm.js",
   "browser": "dist/dataway.umd.js",

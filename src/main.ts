@@ -1,6 +1,4 @@
-import { Functor2 } from 'fp-ts/lib/Functor';
-import { Apply2 } from 'fp-ts/lib/Apply';
-import { Applicative2 } from 'fp-ts/lib/Applicative';
+import { Monad2 } from 'fp-ts/lib/Monad';
 
 declare module 'fp-ts/lib/HKT' {
   interface URI2HKT2<L, A> {
@@ -44,6 +42,10 @@ export class NotAsked<L, A> {
     return (fab.isNotAsked() ? fab : this) as any;
   }
 
+  chain<B>(f: (a: A) => Dataway<L, B>): Dataway<L, B> {
+    return this as any;
+  }
+
   fold<B>(
     onNotAsked: B,
     onLoading: B,
@@ -84,6 +86,10 @@ export class Loading<L, A> {
     return (fab.isLoading() ? fab : this) as any;
   }
 
+  chain<B>(f: (a: A) => Dataway<L, B>): Dataway<L, B> {
+    return this as any;
+  }
+
   fold<B>(
     onNotAsked: B,
     onLoading: B,
@@ -116,6 +122,10 @@ export class Failure<L, A> {
   }
   ap<B>(fab: Dataway<L, (a: A) => B>): Dataway<L, B> {
     return (fab.isFailure() ? fab : this) as any;
+  }
+
+  chain<B>(f: (a: A) => Dataway<L, B>): Dataway<L, B> {
+    return this as any;
   }
 
   fold<B>(
@@ -155,6 +165,11 @@ export class Success<L, A> {
     }
     return fab as any;
   }
+
+  chain<B>(f: (a: A) => Dataway<L, B>): Dataway<L, B> {
+    return f(this.value);
+  }
+
   fold<B>(
     onNotAsked: B,
     onLoading: B,
@@ -188,6 +203,11 @@ const ap = <L, A, B>(
 const map = <L, A, B>(fa: Dataway<L, A>, f: (a: A) => B): Dataway<L, B> =>
   fa.map(f);
 
+const chain = <L, A, B>(
+  fa: Dataway<L, A>,
+  f: (a: A) => Dataway<L, B>,
+): Dataway<L, B> => fa.chain(f);
+
 export const map2 = <L, A, B, C>(
   f: (a: A) => (b: B) => C,
   fa: Dataway<L, A>,
@@ -218,9 +238,10 @@ export const fold = <L, A, B>(
   return fa.fold(onNotAsked, onLoading, onFailure, onSuccess);
 };
 
-export const dataway: Functor2<URI> & Apply2<URI> & Applicative2<URI> = {
+export const dataway: Monad2<URI> = {
   URI,
   of,
   ap,
   map,
+  chain,
 };
