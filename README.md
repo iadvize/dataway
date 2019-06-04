@@ -92,6 +92,7 @@ At some point you will want to pull the trigger and use the values tucked inside
 but since we want you to have a safe code, you will have to provide handler for each case.
 
 The following example could be used with react.
+
 ```javascript
 dataway
   .map(success('abc'), stringLength)
@@ -174,6 +175,22 @@ map2(f, success('abc'), success('def'));
 // => success('abcdef')
 map2(f, success('abc'), failure('xyz'));
 // => failure('xyz')
+```
+
+## Chain
+
+The chain function is usefull for applying one or many computation that may fail.
+A good example of that is validating the content of `Dataway`
+```javascript
+const data = success([{}, {}, {}]);
+data
+  .chain(value =>
+    Array.isArray(value) ? success(value) : failure('should be an array'),
+  )
+  .chain(value =>
+    value[0] !== undefined ? success(value) : failure('should not be empty'),
+  );
+// => success([{}, {}, {}])
 ```
 
 # FAQ
