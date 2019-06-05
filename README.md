@@ -1,5 +1,11 @@
 # Dataway
 
+## Installation
+
+`npm install dataway`
+
+`yarn add dataway`
+
 ## Introduction
 
 `Dataway` is an Algebra meant to represent any fetched data,
