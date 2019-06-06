@@ -1,3 +1,4 @@
+import { Either } from 'fp-ts/lib/Either';
 import { Monad2 } from 'fp-ts/lib/Monad';
 
 declare module 'fp-ts/lib/HKT' {
@@ -194,6 +195,14 @@ export const success = <L, A>(a: A): Dataway<L, A> => {
 };
 
 const of = success;
+
+export const fromEither = <L, A>(e: Either<L, A>) => {
+  if (e.isLeft()) {
+    return failure<L, A>(e.value);
+  }
+
+  return success<L, A>(e.value);
+};
 
 const ap = <L, A, B>(
   fab: Dataway<L, (a: A) => B>,
