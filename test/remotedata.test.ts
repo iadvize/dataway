@@ -1,3 +1,5 @@
+import { left, right } from 'fp-ts/lib/Either';
+
 import {
   Dataway,
   dataway,
@@ -8,6 +10,7 @@ import {
   map2,
   map3,
   append,
+  fromEither,
 } from '../src/main';
 
 describe('Dataway', () => {
@@ -213,5 +216,39 @@ describe('Dataway', () => {
         onSuccess,
       ),
     ).toEqual('4');
+  });
+
+  describe('fromEither', () => {
+    it('create failure from Left', () => {
+      const myError = 'my error';
+      const eitherLeft = left<string, string>(myError);
+
+      const data = fromEither(eitherLeft);
+      const content = data.fold(
+        'not asked',
+        'loading',
+        error => error,
+        value => value,
+      );
+
+      expect(data.isFailure()).toEqual(true);
+      expect(content).toEqual(myError);
+    });
+
+    it('create success from Right', () => {
+      const myValue = 'my value';
+      const eitherRight = right<string, string>(myValue);
+
+      const data = fromEither(eitherRight);
+      const content = data.fold(
+        'not asked',
+        'loading',
+        error => error,
+        value => value,
+      );
+
+      expect(data.isSuccess()).toEqual(true);
+      expect(content).toEqual(myValue);
+    });
   });
 });
