@@ -181,16 +181,16 @@ export class Success<L, A> {
   }
 }
 
-export const notAsked = <L, A>(): Dataway<L, A> => {
+export const notAsked = <L, A>(): NotAsked<L, A> => {
   return new NotAsked();
 };
-export const loading = <L, A>(): Dataway<L, A> => {
+export const loading = <L, A>(): Loading<L, A> => {
   return new Loading();
 };
-export const failure = <L, A>(l: L): Dataway<L, A> => {
+export const failure = <L, A>(l: L): Failure<L, A> => {
   return new Failure(l);
 };
-export const success = <L, A>(a: A): Dataway<L, A> => {
+export const success = <L, A>(a: A): Success<L, A> => {
   return new Success(a);
 };
 
