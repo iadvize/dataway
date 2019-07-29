@@ -1,4 +1,5 @@
 import { Either } from 'fp-ts/lib/Either';
+import { Option } from 'fp-ts/lib/Option';
 import { Monad2 } from 'fp-ts/lib/Monad';
 
 declare module 'fp-ts/lib/HKT' {
@@ -202,6 +203,13 @@ export const fromEither = <L, A>(e: Either<L, A>) => {
   }
 
   return success<L, A>(e.value);
+};
+
+export const fromOption = <L>(e: L) => <A>(o: Option<A>) => {
+  if (o.isNone()) {
+    return failure(e);
+  }
+  return success(o.value);
 };
 
 const ap = <L, A, B>(
