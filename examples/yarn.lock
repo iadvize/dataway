@@ -3033,10 +3033,10 @@ data-urls@^1.0.0, data-urls@^1.1.0:
     whatwg-mimetype "^2.2.0"
     whatwg-url "^7.0.0"
 
-dataway@^1.0.0-beta.0:
-  version "1.0.0-beta.0"
-  resolved "https://registry.yarnpkg.com/dataway/-/dataway-1.0.0-beta.0.tgz#d9a5f7d643d77af8a9f31e93359c1829d4aa463f"
-  integrity sha512-wer0CzdWEa6ne77aVWYVMcDYIDgrZOl32tmfdI3RAgbTt6NbiowBQVT1nkCOrW5fBscMmBJ5/sGwXVvV0vfEXQ==
+dataway@1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/dataway/-/dataway-1.1.2.tgz#670b1eef3baf065dd635c9085c09d855c8e00763"
+  integrity sha512-MDM8EtY5zAmNJ4lSOAwGIrNdJgqvpqcyrUTkADkvXjYQfhwZuUBFEBGbaqVvTZhAI2eCgpHqDPnx9wo1TZ8+Hw==
   dependencies:
     fp-ts "^1.18.2"
 
@@ -5883,10 +5883,10 @@ lodash.uniq@^4.5.0:
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
   integrity sha1-0CJTc662Uq3BvILklFM5qEJ1R3M=
 
-"lodash@>=3.5 <5", lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.5:
-  version "4.17.11"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
-  integrity sha512-cQKh8igo5QUhZ7lg38DYWAxMvjSAKG0A8wGSVimP07SIUEK2UO+arSRKbRZWtelMtN5V0Hkwh5ryOto/SshYIg==
+lodash@4.17.13, "lodash@>=3.5 <5", lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.5:
+  version "4.17.13"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.13.tgz#0bdc3a6adc873d2f4e0c4bac285df91b64fc7b93"
+  integrity sha512-vm3/XWXfWtRua0FkUyEHBZy8kCPjErNBT9fJx8Zvs+U6zjqPbTUOpkaoum3O5uiA8sm+yNMHXfYkTUHFoMxFNA==
 
 loglevel@^1.4.1:
   version "1.6.1"
