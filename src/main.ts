@@ -1,4 +1,4 @@
-import { Either } from 'fp-ts/lib/Either';
+import { Either, isLeft } from 'fp-ts/lib/Either';
 import { Option } from 'fp-ts/lib/Option';
 import { Monad2 } from 'fp-ts/lib/Monad';
 
@@ -198,11 +198,11 @@ export const success = <L, A>(a: A): Success<L, A> => {
 const of = success;
 
 export const fromEither = <L, A>(e: Either<L, A>) => {
-  if (e.isLeft()) {
-    return failure<L, A>(e.value);
+  if (isLeft(e)) {
+    return failure<L, A>(e.left);
   }
 
-  return success<L, A>(e.value);
+  return success<L, A>(e.right);
 };
 
 export const fromOption = <L>(e: L) => <A>(o: Option<A>) => {
