@@ -1,10 +1,11 @@
 import { Either, isLeft } from 'fp-ts/lib/Either';
-import { Option } from 'fp-ts/lib/Option';
+import { Option, isNone } from 'fp-ts/lib/Option';
 import { Monad2 } from 'fp-ts/lib/Monad';
+import { pipeable } from 'fp-ts/lib/pipeable';
 
 declare module 'fp-ts/lib/HKT' {
-  interface URI2HKT2<L, A> {
-    Dataway: Dataway<L, A>;
+  interface URItoKind2<E, A> {
+    Dataway: Dataway<E, A>;
   }
 }
 
@@ -12,190 +13,50 @@ export const URI = 'Dataway';
 
 export type URI = typeof URI;
 
-export type Dataway<L, A> =
-  | NotAsked<L, A>
-  | Loading<L, A>
-  | Failure<L, A>
-  | Success<L, A>;
-
-export class NotAsked<L, A> {
-  readonly _tag = 'NotAsked';
-  constructor() {}
-  isNotAsked() {
-    return true;
-  }
-  isLoading() {
-    return false;
-  }
-  isFailure() {
-    return false;
-  }
-  isSuccess() {
-    return false;
-  }
-
-  map<B>(f: (a: A) => B): Dataway<L, B> {
-    return this as any;
-  }
-  ap<B>(fab: Dataway<L, (a: A) => B>): Dataway<L, B> {
-    if (fab.isFailure()) {
-      return fab as any;
-    }
-    return (fab.isNotAsked() ? fab : this) as any;
-  }
-
-  chain<B>(f: (a: A) => Dataway<L, B>): Dataway<L, B> {
-    return this as any;
-  }
-
-  fold<B>(
-    onNotAsked: B,
-    onLoading: B,
-    onFailure: (e: L) => B,
-    onSuccess: (a: A) => B,
-  ) {
-    return onNotAsked;
-  }
+export interface NotAsked {
+  readonly _tag: 'NotAsked';
 }
 
-export class Loading<L, A> {
-  readonly _tag = 'Loading';
-  constructor() {}
-
-  isNotAsked() {
-    return false;
-  }
-  isLoading() {
-    return true;
-  }
-  isFailure() {
-    return false;
-  }
-  isSuccess() {
-    return false;
-  }
-
-  map<B>(f: (a: A) => B): Dataway<L, B> {
-    return this as any;
-  }
-  ap<B>(fab: Dataway<L, (a: A) => B>): Dataway<L, B> {
-    if (fab.isNotAsked()) {
-      return notAsked();
-    }
-    if (fab.isFailure()) {
-      return fab as any;
-    }
-    return (fab.isLoading() ? fab : this) as any;
-  }
-
-  chain<B>(f: (a: A) => Dataway<L, B>): Dataway<L, B> {
-    return this as any;
-  }
-
-  fold<B>(
-    onNotAsked: B,
-    onLoading: B,
-    onFailure: (e: L) => B,
-    onSuccess: (a: A) => B,
-  ) {
-    return onLoading;
-  }
+export interface Loading {
+  readonly _tag: 'Loading';
 }
 
-export class Failure<L, A> {
-  readonly _tag = 'Failure';
-  constructor(readonly value: L) {}
-
-  isNotAsked() {
-    return false;
-  }
-  isLoading() {
-    return false;
-  }
-  isFailure() {
-    return true;
-  }
-  isSuccess() {
-    return false;
-  }
-
-  map<B>(f: (a: A) => B): Dataway<L, B> {
-    return this as any;
-  }
-  ap<B>(fab: Dataway<L, (a: A) => B>): Dataway<L, B> {
-    return (fab.isFailure() ? fab : this) as any;
-  }
-
-  chain<B>(f: (a: A) => Dataway<L, B>): Dataway<L, B> {
-    return this as any;
-  }
-
-  fold<B>(
-    onNotAsked: B,
-    onLoading: B,
-    onFailure: (e: L) => B,
-    onSuccess: (a: A) => B,
-  ) {
-    return onFailure(this.value);
-  }
+export interface Failure<E> {
+  readonly _tag: 'Failure';
+  readonly failure: E;
 }
 
-export class Success<L, A> {
-  readonly _tag = 'Success';
-  constructor(readonly value: A) {}
-
-  isNotAsked() {
-    return false;
-  }
-  isLoading() {
-    return false;
-  }
-  isFailure() {
-    return false;
-  }
-  isSuccess() {
-    return true;
-  }
-
-  map<B>(f: (a: A) => B): Dataway<L, B> {
-    return new Success(f(this.value));
-  }
-  ap<B>(fab: Dataway<L, (a: A) => B>): Dataway<L, B> {
-    if (fab.isSuccess()) {
-      const _fab = fab as Success<L, (a: A) => B>;
-      return this.map(_fab.value);
-    }
-    return fab as any;
-  }
-
-  chain<B>(f: (a: A) => Dataway<L, B>): Dataway<L, B> {
-    return f(this.value);
-  }
-
-  fold<B>(
-    onNotAsked: B,
-    onLoading: B,
-    onFailure: (e: L) => B,
-    onSuccess: (a: A) => B,
-  ) {
-    return onSuccess(this.value);
-  }
+export interface Success<A> {
+  readonly _tag: 'Success';
+  readonly success: A;
 }
 
-export const notAsked = <L, A>(): NotAsked<L, A> => {
-  return new NotAsked();
-};
-export const loading = <L, A>(): Loading<L, A> => {
-  return new Loading();
-};
-export const failure = <L, A>(l: L): Failure<L, A> => {
-  return new Failure(l);
-};
-export const success = <L, A>(a: A): Success<L, A> => {
-  return new Success(a);
-};
+export type Dataway<E, A> = NotAsked | Loading | Failure<E> | Success<A>;
 
-const of = success;
+export const notAsked: Dataway<never, never> = { _tag: 'NotAsked' };
+
+export const loading: Dataway<never, never> = { _tag: 'Loading' };
+
+export function failure<E = never, A = never>(f: E): Dataway<E, A> {
+  return { _tag: 'Failure', failure: f };
+}
+
+export function success<E = never, A = never>(s: A): Dataway<E, A> {
+  return { _tag: 'Success', success: s };
+}
+
+export function isNotAsked<L, A>(ma: Dataway<L, A>): ma is NotAsked {
+  return ma._tag === 'NotAsked';
+}
+export function isLoading<L, A>(ma: Dataway<L, A>): ma is Loading {
+  return ma._tag === 'Loading';
+}
+export function isFailure<L, A>(ma: Dataway<L, A>): ma is Failure<L> {
+  return ma._tag === 'Failure';
+}
+export function isSuccess<L, A>(ma: Dataway<L, A>): ma is Success<A> {
+  return ma._tag === 'Success';
+}
 
 export const fromEither = <L, A>(e: Either<L, A>) => {
   if (isLeft(e)) {
@@ -206,59 +67,84 @@ export const fromEither = <L, A>(e: Either<L, A>) => {
 };
 
 export const fromOption = <L>(e: L) => <A>(o: Option<A>) => {
-  if (o.isNone()) {
+  if (isNone(o)) {
     return failure(e);
   }
   return success(o.value);
 };
-
-const ap = <L, A, B>(
-  fab: Dataway<L, (a: A) => B>,
-  fa: Dataway<L, A>,
-): Dataway<L, B> => fa.ap(fab);
-
-const map = <L, A, B>(fa: Dataway<L, A>, f: (a: A) => B): Dataway<L, B> =>
-  fa.map(f);
-
-const chain = <L, A, B>(
-  fa: Dataway<L, A>,
-  f: (a: A) => Dataway<L, B>,
-): Dataway<L, B> => fa.chain(f);
-
 export const map2 = <L, A, B, C>(
   f: (a: A) => (b: B) => C,
   fa: Dataway<L, A>,
   fb: Dataway<L, B>,
-): Dataway<L, C> => ap(fa.map(f), fb);
+): Dataway<L, C> => dataway.ap(dataway.map(fa, f), fb);
 
 export const map3 = <L, A, B, C, D>(
   f: (a: A) => (b: B) => (c: C) => D,
   fa: Dataway<L, A>,
   fb: Dataway<L, B>,
   fc: Dataway<L, C>,
-): Dataway<L, D> => ap(ap(fa.map(f), fb), fc);
+): Dataway<L, D> => dataway.ap(dataway.ap(dataway.map(fa, f), fb), fc);
 
 export const append = <L, A, B>(
   fa: Dataway<L, A>,
   fb: Dataway<L, B>,
 ): Dataway<L, [A, B]> => {
-  return ap(fa.map((a: A) => (b: B): [A, B] => [a, b]), fb);
+  return dataway.ap(dataway.map(fa, (a: A) => (b: B): [A, B] => [a, b]), fb);
 };
 
 export const fold = <L, A, B>(
-  onNotAsked: B,
-  onLoading: B,
+  onNotAsked: () => B,
+  onLoading: () => B,
   onFailure: (e: L) => B,
   onSuccess: (a: A) => B,
-  fa: Dataway<L, A>,
+  ma: Dataway<L, A>,
 ): B => {
-  return fa.fold(onNotAsked, onLoading, onFailure, onSuccess);
+  switch (ma._tag) {
+    case 'NotAsked':
+      return onNotAsked();
+
+    case 'Loading':
+      return onLoading();
+
+    case 'Failure':
+      return onFailure(ma.failure);
+
+    case 'Success':
+      return onSuccess(ma.success);
+  }
 };
 
 export const dataway: Monad2<URI> = {
   URI,
-  of,
-  ap,
-  map,
-  chain,
+  of: success,
+  ap: (mab, ma) => {
+    switch (ma._tag) {
+      case 'NotAsked':
+        if (isFailure(mab)) {
+          return mab;
+        }
+        return isNotAsked(mab) ? mab : ma;
+
+      case 'Loading':
+        if (isNotAsked(mab) || isFailure(mab)) {
+          return mab;
+        }
+        return isLoading(mab) ? mab : ma;
+
+      case 'Failure':
+        return isFailure(mab) ? mab : ma;
+
+      case 'Success':
+        if (isSuccess(mab)) {
+          return success(mab.success(ma.success));
+        }
+        return mab;
+    }
+  },
+  map: (ma, f) => (isSuccess(ma) ? success(f(ma.success)) : ma),
+  chain: (ma, f) => (isSuccess(ma) ? f(ma.success) : ma),
 };
+
+const { ap, map, chain } = pipeable(dataway);
+
+export { ap, map, chain };

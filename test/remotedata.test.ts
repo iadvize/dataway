@@ -7,26 +7,28 @@ import {
   loading,
   failure,
   success,
+  map,
   map2,
   map3,
   append,
+  fold,
   fromEither,
+  isFailure,
+  isSuccess,
 } from '../src/main';
 
 describe('Dataway', () => {
   describe('Functor', () => {
     it('map', () => {
       const f = (s: string): number => s.length;
-      expect(notAsked<string, string>().map(f)).toEqual(notAsked());
-      expect(loading<string, string>().map(f)).toEqual(loading());
-      expect(failure<string, string>('xyz').map(f)).toEqual(failure('xyz'));
-      expect(success('abc').map(f)).toEqual(success(3));
+      expect(map(f)(notAsked)).toEqual(notAsked);
+      expect(map(f)(loading)).toEqual(loading);
+      expect(map(f)(failure('xyz'))).toEqual(failure('xyz'));
+      expect(map(f)(success('abc'))).toEqual(success(3));
 
-      expect(dataway.map(notAsked<string, string>(), f)).toEqual(notAsked());
-      expect(dataway.map(loading<string, string>(), f)).toEqual(loading());
-      expect(dataway.map(failure<string, string>('xyz'), f)).toEqual(
-        failure('xyz'),
-      );
+      expect(dataway.map(notAsked, f)).toEqual(notAsked);
+      expect(dataway.map(loading, f)).toEqual(loading);
+      expect(dataway.map(failure('xyz'), f)).toEqual(failure('xyz'));
       expect(dataway.map(success('abc'), f)).toEqual(success(3));
     });
   });
@@ -34,75 +36,38 @@ describe('Dataway', () => {
   describe('Apply', () => {
     const f = (s: string): number => s.length;
     it('return failure if any of the Dataway fail', () => {
-      expect(
-        notAsked<string, string>().ap(
-          failure<string, (s: string) => number>('xyz'),
-        ),
-      ).toEqual(failure('xyz'));
-      expect(
-        loading<string, string>().ap(
-          failure<string, (s: string) => number>('xyz'),
-        ),
-      ).toEqual(failure('xyz'));
-      expect(success('abc').ap(failure('xyz'))).toEqual(failure('xyz'));
-      expect(
-        failure<string, string>('xyz').ap(
-          notAsked<string, (s: string) => number>(),
-        ),
-      ).toEqual(failure('xyz'));
-      expect(
-        failure<string, string>('xyz').ap(
-          loading<string, (s: string) => number>(),
-        ),
-      ).toEqual(failure('xyz'));
-      expect(
-        failure<string, string>('xyz').ap(
-          success<string, (s: string) => number>(f),
-        ),
-      ).toEqual(failure('xyz'));
+      expect(dataway.ap(notAsked, failure('xyz'))).toEqual(failure('xyz'));
+      expect(dataway.ap(loading, failure('xyz'))).toEqual(failure('xyz'));
+      expect(dataway.ap(success(a => a), failure('xyz'))).toEqual(
+        failure('xyz'),
+      );
+      expect(dataway.ap(failure('xyz'), notAsked)).toEqual(failure('xyz'));
+      expect(dataway.ap(failure('xyz'), loading)).toEqual(failure('xyz'));
     });
 
     it('return left failure if two Dataway are failed', () => {
-      expect(
-        failure<string, string>('xyz').ap(
-          failure<string, (s: string) => number>('stu'),
-        ),
-      ).toEqual(failure('stu'));
+      expect(dataway.ap(failure('xyz'), failure('stu'))).toEqual(
+        failure('xyz'),
+      );
     });
 
     it('return Loading if both Dataway are loading or one is a success', () => {
-      expect(
-        loading<string, string>().ap(loading<string, (s: string) => number>()),
-      ).toEqual(loading());
-      expect(
-        loading<string, string>().ap(success<string, (s: string) => number>(f)),
-      ).toEqual(loading());
-      expect(success('abc').ap(loading())).toEqual(loading());
+      expect(dataway.ap(loading, loading)).toEqual(loading);
+      expect(dataway.ap(loading, success(f))).toEqual(loading);
+      expect(dataway.ap(success(a => a), loading)).toEqual(loading);
     });
 
     it('return NotAsked if one of the Dataway is NotAsked and the other is not Failed', () => {
-      expect(
-        notAsked<string, string>().ap(
-          notAsked<string, (s: string) => number>(),
-        ),
-      ).toEqual(notAsked());
-      expect(
-        notAsked<string, string>().ap(loading<string, (s: string) => number>()),
-      ).toEqual(notAsked());
-      expect(
-        notAsked<string, string>().ap(
-          success<string, (s: string) => number>(f),
-        ),
-      ).toEqual(notAsked());
-      expect(
-        loading<string, string>().ap(notAsked<string, (s: string) => number>()),
-      ).toEqual(notAsked());
-      expect(success('abc').ap(notAsked())).toEqual(notAsked());
-      expect(notAsked<string, string>().ap(success(f))).toEqual(notAsked());
+      expect(dataway.ap(notAsked, notAsked)).toEqual(notAsked);
+      expect(dataway.ap(notAsked, loading)).toEqual(notAsked);
+      expect(dataway.ap(notAsked, success(f))).toEqual(notAsked);
+      expect(dataway.ap(loading, notAsked)).toEqual(notAsked);
+      expect(dataway.ap(success(a => a), notAsked)).toEqual(notAsked);
+      expect(dataway.ap(notAsked, success(f))).toEqual(notAsked);
     });
 
     it('return a Dataway with an object of values from two succesfull Dataway', () => {
-      expect(success('abc').ap(success(f))).toEqual(success(3));
+      expect(dataway.ap(success(f), success('abc'))).toEqual(success(3));
     });
 
     describe('map2', () => {
@@ -146,17 +111,18 @@ describe('Dataway', () => {
 
   describe('Applicative', () => {
     it('follow Identity law', () => {
-      expect(
-        dataway.ap(
-          dataway.of<string, (a: string) => string>(a => a),
-          success('abc'),
-        ),
-      ).toEqual(success('abc'));
+      const identity = <A>(a: A): A => a;
+      expect(dataway.ap(dataway.of(identity), success('abc'))).toEqual(
+        success('abc'),
+      );
     });
     it('follow Homomorphism law', () => {
-      expect(dataway.ap(dataway.of(success), dataway.of('abc'))).toEqual(
-        dataway.of(success('abc')),
-      );
+      expect(
+        dataway.ap(
+          dataway.of<unknown, (s: string) => Dataway<unknown, string>>(success),
+          dataway.of('abc'),
+        ),
+      ).toEqual(dataway.of(success('abc')));
     });
     it('follow Interchange law', () => {
       const f = (s: string): number => s.length;
@@ -180,74 +146,62 @@ describe('Dataway', () => {
   });
 
   it('fold', () => {
-    const notaskedvalue = 'notAsked';
-    const loadingvalue = 'loading';
+    const notaskedvalue = () => 'notAsked';
+    const loadingvalue = () => 'loading';
     const onError = (error: string): string => error;
     const onSuccess = (value: string): string => value.length.toString();
     expect(
-      notAsked<string, string>().fold(
-        notaskedvalue,
-        loadingvalue,
-        onError,
-        onSuccess,
-      ),
-    ).toEqual(notaskedvalue);
+      fold(notaskedvalue, loadingvalue, onError, onSuccess, notAsked),
+    ).toEqual('notAsked');
     expect(
-      loading<string, string>().fold(
-        notaskedvalue,
-        loadingvalue,
-        onError,
-        onSuccess,
-      ),
-    ).toEqual(loadingvalue);
+      fold(notaskedvalue, loadingvalue, onError, onSuccess, loading),
+    ).toEqual('loading');
     expect(
-      failure<string, string>('error loading resource').fold(
+      fold(
         notaskedvalue,
         loadingvalue,
         onError,
         onSuccess,
+        failure('error loading resource'),
       ),
     ).toEqual('error loading resource');
     expect(
-      success<string, string>('axel').fold(
-        notaskedvalue,
-        loadingvalue,
-        onError,
-        onSuccess,
-      ),
+      fold(notaskedvalue, loadingvalue, onError, onSuccess, success('axel')),
     ).toEqual('4');
   });
 
   describe('fromEither', () => {
     it('create failure from Left', () => {
       const myError = 'my error';
-      const eitherLeft = left<string, string>(myError);
+      const eitherLeft = left(myError);
 
       const data = fromEither(eitherLeft);
-      const content = data.fold(
-        'not asked',
-        'loading',
+      const content = fold(
+        () => 'not asked',
+        () => 'loading',
         error => error,
         value => value,
+        data,
       );
 
-      expect(data.isFailure()).toEqual(true);
+      expect(isFailure(data)).toEqual(true);
       expect(content).toEqual(myError);
     });
 
     it('create success from Right', () => {
       const myValue = 'my value';
-      const eitherRight = right<string, string>(myValue);
+      const eitherRight = right(myValue);
 
       const data = fromEither(eitherRight);
-      const content = data.fold(
-        'not asked',
-        'loading',
+      const content = fold(
+        () => 'not asked',
+        () => 'loading',
         error => error,
         value => value,
+        data,
       );
 
-      expect(data.isSuccess()).toEqual(true);
+      expect(isSuccess(data)).toEqual(true);
       expect(content).toEqual(myValue);
     });
   });
