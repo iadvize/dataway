@@ -17,6 +17,9 @@
   "files": [
     "dist"
   ],
+  "resolutions": {
+    "lodash": "4.17.13"
+  },
   "devDependencies": {
     "@types/jest": "^24.0.13",
     "jest": "^24.8.0",
