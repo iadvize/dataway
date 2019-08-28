@@ -37,69 +37,73 @@ export const notAsked: Dataway<never, never> = { _tag: 'NotAsked' };
 
 export const loading: Dataway<never, never> = { _tag: 'Loading' };
 
-export function failure<E = never, A = never>(f: E): Dataway<E, A> {
-  return { _tag: 'Failure', failure: f };
+export function failure<E = never, A = never>(failure: E): Dataway<E, A> {
+  return { _tag: 'Failure', failure };
 }
 
-export function success<E = never, A = never>(s: A): Dataway<E, A> {
-  return { _tag: 'Success', success: s };
+export function success<E = never, A = never>(success: A): Dataway<E, A> {
+  return { _tag: 'Success', success };
 }
 
-export function isNotAsked<L, A>(ma: Dataway<L, A>): ma is NotAsked {
-  return ma._tag === 'NotAsked';
+export function isNotAsked<L, A>(monadA: Dataway<L, A>): monadA is NotAsked {
+  return monadA._tag === 'NotAsked';
 }
-export function isLoading<L, A>(ma: Dataway<L, A>): ma is Loading {
-  return ma._tag === 'Loading';
+export function isLoading<L, A>(monadA: Dataway<L, A>): monadA is Loading {
+  return monadA._tag === 'Loading';
 }
-export function isFailure<L, A>(ma: Dataway<L, A>): ma is Failure<L> {
-  return ma._tag === 'Failure';
+export function isFailure<L, A>(monadA: Dataway<L, A>): monadA is Failure<L> {
+  return monadA._tag === 'Failure';
 }
-export function isSuccess<L, A>(ma: Dataway<L, A>): ma is Success<A> {
-  return ma._tag === 'Success';
+export function isSuccess<L, A>(monadA: Dataway<L, A>): monadA is Success<A> {
+  return monadA._tag === 'Success';
 }
 
-export const fromEither = <L, A>(e: Either<L, A>) => {
-  if (isLeft(e)) {
-    return failure<L, A>(e.left);
+export const fromEither = <L, A>(either: Either<L, A>) => {
+  if (isLeft(either)) {
+    return failure<L, A>(either.left);
   }
 
-  return success<L, A>(e.right);
+  return success<L, A>(either.right);
 };
 
-export const fromOption = <L>(e: L) => <A>(o: Option<A>) => {
-  if (isNone(o)) {
-    return failure(e);
+export const fromOption = <L>(defaultFailure: L) => <A>(option: Option<A>) => {
+  if (isNone(option)) {
+    return failure(defaultFailure);
   }
-  return success(o.value);
+  return success(option.value);
 };
 export const map2 = <L, A, B, C>(
   f: (a: A) => (b: B) => C,
-  fa: Dataway<L, A>,
-  fb: Dataway<L, B>,
-): Dataway<L, C> => dataway.ap(dataway.map(fa, f), fb);
+  functorA: Dataway<L, A>,
+  functorB: Dataway<L, B>,
+): Dataway<L, C> => dataway.ap(dataway.map(functorA, f), functorB);
 
 export const map3 = <L, A, B, C, D>(
   f: (a: A) => (b: B) => (c: C) => D,
-  fa: Dataway<L, A>,
-  fb: Dataway<L, B>,
-  fc: Dataway<L, C>,
-): Dataway<L, D> => dataway.ap(dataway.ap(dataway.map(fa, f), fb), fc);
+  functorA: Dataway<L, A>,
+  functorB: Dataway<L, B>,
+  functorC: Dataway<L, C>,
+): Dataway<L, D> =>
+  dataway.ap(dataway.ap(dataway.map(functorA, f), functorB), functorC);
 
 export const append = <L, A, B>(
-  fa: Dataway<L, A>,
-  fb: Dataway<L, B>,
+  functorA: Dataway<L, A>,
+  functorB: Dataway<L, B>,
 ): Dataway<L, [A, B]> => {
-  return dataway.ap(dataway.map(fa, (a: A) => (b: B): [A, B] => [a, b]), fb);
+  return dataway.ap(
+    dataway.map(functorA, (a: A) => (b: B): [A, B] => [a, b]),
+    functorB,
+  );
 };
 
 export const fold = <L, A, B>(
   onNotAsked: () => B,
   onLoading: () => B,
-  onFailure: (e: L) => B,
-  onSuccess: (a: A) => B,
-  ma: Dataway<L, A>,
+  onFailure: (failure: L) => B,
+  onSuccess: (success: A) => B,
+  monadA: Dataway<L, A>,
 ): B => {
-  switch (ma._tag) {
+  switch (monadA._tag) {
     case 'NotAsked':
       return onNotAsked();
 
@@ -107,42 +111,43 @@ export const fold = <L, A, B>(
       return onLoading();
 
     case 'Failure':
-      return onFailure(ma.failure);
+      return onFailure(monadA.failure);
 
     case 'Success':
-      return onSuccess(ma.success);
+      return onSuccess(monadA.success);
   }
 };
 
 export const dataway: Monad2<URI> = {
   URI,
   of: success,
-  ap: (mab, ma) => {
-    switch (ma._tag) {
+  ap: (monadAtoB, monadA) => {
+    switch (monadA._tag) {
       case 'NotAsked':
-        if (isFailure(mab)) {
-          return mab;
+        if (isFailure(monadAtoB)) {
+          return monadAtoB;
         }
-        return isNotAsked(mab) ? mab : ma;
+        return isNotAsked(monadAtoB) ? monadAtoB : monadA;
 
       case 'Loading':
-        if (isNotAsked(mab) || isFailure(mab)) {
-          return mab;
+        if (isNotAsked(monadAtoB) || isFailure(monadAtoB)) {
+          return monadAtoB;
         }
-        return isLoading(mab) ? mab : ma;
+        return isLoading(monadAtoB) ? monadAtoB : monadA;
 
       case 'Failure':
-        return isFailure(mab) ? mab : ma;
+        return isFailure(monadAtoB) ? monadAtoB : monadA;
 
       case 'Success':
-        if (isSuccess(mab)) {
-          return success(mab.success(ma.success));
+        if (isSuccess(monadAtoB)) {
+          return success(monadAtoB.success(monadA.success));
         }
-        return mab;
+        return monadAtoB;
     }
   },
-  map: (ma, f) => (isSuccess(ma) ? success(f(ma.success)) : ma),
-  chain: (ma, f) => (isSuccess(ma) ? f(ma.success) : ma),
+  map: (monadA, func) =>
+    isSuccess(monadA) ? success(func(monadA.success)) : monadA,
+  chain: (monadA, func) => (isSuccess(monadA) ? func(monadA.success) : monadA),
 };
 
 const { ap, map, chain } = pipeable(dataway);
