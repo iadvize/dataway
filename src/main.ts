@@ -45,12 +45,6 @@ export function success<E = never, A = never>(success: A): Dataway<E, A> {
   return { _tag: 'Success', success };
 }
 
-export function fromNullable<E = never, A = never>(
-  successValue: A | null | undefined,
-): Dataway<E, A> {
-  return successValue == null ? notAsked : success(successValue);
-}
-
 export function isNotAsked<L, A>(monadA: Dataway<L, A>): monadA is NotAsked {
   return monadA._tag === 'NotAsked';
 }
@@ -62,6 +56,12 @@ export function isFailure<L, A>(monadA: Dataway<L, A>): monadA is Failure<L> {
 }
 export function isSuccess<L, A>(monadA: Dataway<L, A>): monadA is Success<A> {
   return monadA._tag === 'Success';
+}
+
+export function fromNullable<E = never, A = never>(
+  successValue: A | null | undefined,
+): Dataway<E, A> {
+  return successValue == null ? notAsked : success(successValue);
 }
 
 export const fromEither = <L, A>(either: Either<L, A>) => {
@@ -78,6 +78,7 @@ export const fromOption = <L>(defaultFailure: L) => <A>(option: Option<A>) => {
   }
   return success(option.value);
 };
+
 export const map2 = <L, A, B, C>(
   f: (a: A) => (b: B) => C,
   functorA: Dataway<L, A>,
@@ -127,6 +128,22 @@ export const fold = <L, A, B>(
 export const dataway: Monad2<URI> = {
   URI,
   of: success,
+  /**
+   * apply MonadA value to MonadAtoB function if both are Success
+   * to procude a MonadB
+   *
+   * following table illustrate the dataway ap combinations
+   *
+   * | Monad(a -> b)      | Monad(a)     | Result            |
+   * | ------------------ | ------------ | ----------------- |
+   * | success(a -> b)    | succes(a)    | success(b)        |
+   * | success(a -> b)    | notAsked     | notAsked          |
+   * | success(a -> b)    | loading      | loading           |
+   * | success(a -> b)    | failure(c)   | failure(c)        |
+   * | notasked           | failure(c)   | failure(c)        |
+   * | loading            | failure(c)   | failure(c)        |
+   * | failure(d)         | failure(c)   | failure(d)        |
+   */
   ap: (monadAtoB, monadA) => {
     switch (monadA._tag) {
       case 'NotAsked':
@@ -151,8 +168,61 @@ export const dataway: Monad2<URI> = {
         return monadAtoB;
     }
   },
+  /**
+   * Allow to turn function `a -> b` into a `Dataway a -> Dataway b`
+   * Where `Dataway b` use the same constructor value as `Dataway a`
+   *
+   * | f(a -> b)          | Functor(a)   | Result            |
+   * | ------------------ | ------------ | ----------------- |
+   * | f(a -> b)          | success(a)   | success(b)        |
+   * | f(a -> b)          | notAsked     | notAsked          |
+   * | f(a -> b)          | loading      | loading           |
+   * | f(a -> b)          | failure(c)   | failure(c)        |
+   */
   map: (monadA, func) =>
     isSuccess(monadA) ? success(func(monadA.success)) : monadA,
+  /**
+   * Allow to turn function `a -> Dataway b` into a `Dataway a -> Dataway b`
+   * Where `Dataway b` can use a different constructor than `Dataway a`
+   * 
+   * | f(a -> Dataway b)  | Monad(a)   | Result      |
+   * | ------------------ | ------------ | ----------------- |
+   * | f(a -> Success b)  | success(a)   | success(b)        |
+   * | f(a -> Failure b)  | success(a)   | failure(b)        |
+   * | f(a -> Dataway b)  | success(a)   | Dataway b         |
+   * 
+   * this allow us to chain function that can produce different variance of Dataway
+   * ```
+import { dataway, success, failure, loading } from "dataway";
+
+const jsonParse = (json: string) => {
+  try {
+    return success(JSON.parse(json));
+  } catch (error) {
+    return failure(error);
+  }
+};
+
+const checkPayload = payload => {
+  if (payload.hasOwnProperty("failure")) {
+    return failure(payload.failure);
+  }
+  return success(payload);
+};
+
+const validate = data =>
+  dataway.chain(dataway.chain(data, jsonParse), checkPayload);
+
+validate(success("{ \"articles\" : []}"));
+// => Success Object
+validate(success("{ : []}")));
+// => Failure SyntaxError
+validate(success("{ \"failure\" : \"server returned 403\"}")));
+// => Failure "server returned 403"
+validate(loading)
+// => Loading;
+   * ```
+   */
   chain: (monadA, func) => (isSuccess(monadA) ? func(monadA.success) : monadA),
 };
 
