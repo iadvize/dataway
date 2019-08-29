@@ -13,6 +13,7 @@ import {
   append,
   fold,
   fromEither,
+  fromNullable,
   isFailure,
   isSuccess,
 } from '../src/main';
@@ -205,6 +206,21 @@ describe('Dataway', () => {
 
       expect(isSuccess(data)).toEqual(true);
       expect(content).toEqual(myValue);
+    });
+  });
+
+  describe('fromNullable', () => {
+    it('create NotAsked from null', () => {
+      expect(fromNullable(null)).toEqual(notAsked);
+    });
+    it('create NotAsked from undefined', () => {
+      expect(fromNullable(undefined)).toEqual(notAsked);
+    });
+    it('create Success<E, A> from any value different from null and undefined', () => {
+      expect(fromNullable('')).toEqual(success(''));
+      expect(fromNullable('test')).toEqual(success('test'));
+      expect(fromNullable([])).toEqual(success([]));
+      expect(fromNullable({})).toEqual(success({}));
     });
   });
 });
