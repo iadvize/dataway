@@ -12,7 +12,8 @@
     "test": "jest",
     "pretest": "npm run build",
     "prettier-check": "prettier --check '{src,test}/**/*.ts'",
-    "prettier-fix": "prettier --write '{src,test}/**/*.ts'"
+    "prettier-fix": "prettier --write '{src,test}/**/*.ts'",
+    "generate-doc": "typedoc"
   },
   "files": [
     "dist"
@@ -30,6 +31,7 @@
     "rollup-plugin-typescript2": "^0.21.1",
     "ts-jest": "^24.0.2",
     "ts-node": "^8.2.0",
+    "typedoc": "^0.15.0",
     "typescript": "^3.6.2"
   },
   "dependencies": {
