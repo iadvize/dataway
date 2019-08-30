@@ -45,12 +45,6 @@ export function success<E = never, A = never>(success: A): Dataway<E, A> {
   return { _tag: 'Success', success };
 }
 
-export function fromNullable<E = never, A = never>(
-  successValue: A | null | undefined,
-): Dataway<E, A> {
-  return successValue == null ? notAsked : success(successValue);
-}
-
 export function isNotAsked<L, A>(monadA: Dataway<L, A>): monadA is NotAsked {
   return monadA._tag === 'NotAsked';
 }
