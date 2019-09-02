@@ -103,6 +103,40 @@ export const append = <E, A, B>(
   );
 };
 
+/**
+ * Fold is the only way to attempt to safely extract the data,
+ * because it force you to consider the four variations of the dataway state.
+ * The following example demonstrate how useful this is when trying to render a
+ * search result. We may want to notify the user why no result did show up on his screen
+ * 1. The search was not initiated by the user (he didn't click on the search button).
+ * 2. The search could be initiated but not done yet (search can take time),
+ *      a loading visual hint could be displayed.
+ * 3. The search could end up in error (timeout, connectivity issue or plain server crash),
+ *      an error message can be shown or a message to try again.
+ * 4. The search can success and we want to display the result to the user.
+ *
+ * ```
+ * import { dataway, fold } from "dataway";
+ *
+ * const searchResult = dataway.of(["result1", "result2", "result3", "result4"]);
+ *
+ * fold(
+ *   () => "<span>use the Search button for nice code snippet</span>",
+ *   () => "<span>Search initiated, awesome code snippets incomings !</span>",
+ *   error => `<span>ho no ! ${error} did happen, please retry</span>`,
+ *   results => `<ul>${results.map(result => `<li>${result}</li>`)}</ul>`,
+ *   searchResult
+ * );
+ * ```
+ * @typeparam E the error type you expect
+ * @typeparam A the success type you expect
+ * @typeparam B the type of value that you want to produce
+ * @param onNotAsked
+ * @param onLoading
+ * @param onFailure
+ * @param onSuccess
+ * @param monadA
+ */
 export const fold = <E, A, B>(
   onNotAsked: () => B,
   onLoading: () => B,
