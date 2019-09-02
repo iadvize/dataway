@@ -13,24 +13,61 @@ export const URI = 'Dataway';
 
 export type URI = typeof URI;
 
+/**
+ * Interface usually used as default value for dataway,
+ * contains no data
+ */
 export interface NotAsked {
   readonly _tag: 'NotAsked';
 }
 
+/**
+ * Interface used to represent a remote datasource being loaded or
+ * a command being processed (ex: form submit)
+ */
 export interface Loading {
   readonly _tag: 'Loading';
 }
-
+/**
+ * Interface used to represent any failure requesting a remote datasource
+ * It can be used to represent and store
+ * 1. an http error
+ * 2. a value decoding/validation error
+ * 3. a computation error on the retrieved data
+ * @typeparam E the expected error type
+ */
 export interface Failure<E> {
   readonly _tag: 'Failure';
   readonly failure: E;
 }
 
+/**
+ * Interface used to represent remote datasource fetching success
+ * Stores the retrieved value.
+ * It can be used to
+ * 1. represent and store the value that was successfully retrieved
+ * 2. represent and store successful transformation applied to the retrieved value
+ * @typeparam A the expected value type
+ */
 export interface Success<A> {
   readonly _tag: 'Success';
   readonly success: A;
 }
 
+/**
+ * This type represents the four possible states of a remote datasource
+ * fetching result.
+ * 1. The data was not asked yet but eventually will be
+ * 2. The data is being loaded, it can take time
+ * 3. The data fetching ended up in error at any time during the loading or processing of it
+ * 4. The data has been successfully retrieved.
+ *
+ * The order of transformation should look like this
+ * `NotAsked` -> `Loading` -> `Error<E>` | `Success<A>`
+ *
+ * @typeparam E the expected error type
+ * @typeparam A the expected value type
+ */
 export type Dataway<E, A> = NotAsked | Loading | Failure<E> | Success<A>;
 
 export const notAsked: Dataway<never, never> = { _tag: 'NotAsked' };
