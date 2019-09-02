@@ -45,16 +45,16 @@ export function success<E = never, A = never>(success: A): Dataway<E, A> {
   return { _tag: 'Success', success };
 }
 
-export function isNotAsked<L, A>(monadA: Dataway<L, A>): monadA is NotAsked {
+export function isNotAsked<E, A>(monadA: Dataway<E, A>): monadA is NotAsked {
   return monadA._tag === 'NotAsked';
 }
-export function isLoading<L, A>(monadA: Dataway<L, A>): monadA is Loading {
+export function isLoading<E, A>(monadA: Dataway<E, A>): monadA is Loading {
   return monadA._tag === 'Loading';
 }
-export function isFailure<L, A>(monadA: Dataway<L, A>): monadA is Failure<L> {
+export function isFailure<E, A>(monadA: Dataway<E, A>): monadA is Failure<E> {
   return monadA._tag === 'Failure';
 }
-export function isSuccess<L, A>(monadA: Dataway<L, A>): monadA is Success<A> {
+export function isSuccess<E, A>(monadA: Dataway<E, A>): monadA is Success<A> {
   return monadA._tag === 'Success';
 }
 
@@ -64,51 +64,51 @@ export function fromNullable<E = never, A = never>(
   return successValue == null ? notAsked : success(successValue);
 }
 
-export const fromEither = <L, A>(either: Either<L, A>) => {
+export const fromEither = <E, A>(either: Either<E, A>) => {
   if (isLeft(either)) {
-    return failure<L, A>(either.left);
+    return failure<E, A>(either.left);
   }
 
-  return success<L, A>(either.right);
+  return success<E, A>(either.right);
 };
 
-export const fromOption = <L>(defaultFailure: L) => <A>(option: Option<A>) => {
+export const fromOption = <E>(defaultFailure: E) => <A>(option: Option<A>) => {
   if (isNone(option)) {
     return failure(defaultFailure);
   }
   return success(option.value);
 };
 
-export const map2 = <L, A, B, C>(
+export const map2 = <E, A, B, C>(
   f: (a: A) => (b: B) => C,
-  functorA: Dataway<L, A>,
-  functorB: Dataway<L, B>,
-): Dataway<L, C> => dataway.ap(dataway.map(functorA, f), functorB);
+  functorA: Dataway<E, A>,
+  functorB: Dataway<E, B>,
+): Dataway<E, C> => dataway.ap(dataway.map(functorA, f), functorB);
 
-export const map3 = <L, A, B, C, D>(
+export const map3 = <E, A, B, C, D>(
   f: (a: A) => (b: B) => (c: C) => D,
-  functorA: Dataway<L, A>,
-  functorB: Dataway<L, B>,
-  functorC: Dataway<L, C>,
-): Dataway<L, D> =>
+  functorA: Dataway<E, A>,
+  functorB: Dataway<E, B>,
+  functorC: Dataway<E, C>,
+): Dataway<E, D> =>
   dataway.ap(dataway.ap(dataway.map(functorA, f), functorB), functorC);
 
-export const append = <L, A, B>(
-  functorA: Dataway<L, A>,
-  functorB: Dataway<L, B>,
-): Dataway<L, [A, B]> => {
+export const append = <E, A, B>(
+  functorA: Dataway<E, A>,
+  functorB: Dataway<E, B>,
+): Dataway<E, [A, B]> => {
   return dataway.ap(
     dataway.map(functorA, (a: A) => (b: B): [A, B] => [a, b]),
     functorB,
   );
 };
 
-export const fold = <L, A, B>(
+export const fold = <E, A, B>(
   onNotAsked: () => B,
   onLoading: () => B,
-  onFailure: (failure: L) => B,
+  onFailure: (failure: E) => B,
   onSuccess: (success: A) => B,
-  monadA: Dataway<L, A>,
+  monadA: Dataway<E, A>,
 ): B => {
   switch (monadA._tag) {
     case 'NotAsked':
