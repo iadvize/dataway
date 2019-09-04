@@ -95,12 +95,55 @@ export function isSuccess<E, A>(monadA: Dataway<E, A>): monadA is Success<A> {
   return monadA._tag === 'Success';
 }
 
+/**
+ * Constructs a new `Dataway` from a nullable type.
+ * If the value is `null` or `undefined` it returns `NotAsked`,
+ * otherwise it returns the value wrapped in a `Success`
+ *
+ * | parameter    | Result        |
+ * | ------------ | ------------- |
+ * | null         | NotAsked      |
+ * | undefined    | NotAsked      |
+ * | foo          | Success foo   |
+ *
+ *
+ * ```
+ * import { notAsked, success, fromNullable } from  'dataway';
+ *
+ * fromNullable(null) === notAsked;
+ * fromNullable('foo') === success('foo');
+ * ```
+ * @typeparam A type of the provided value
+ */
 export function fromNullable<E = never, A = never>(
   successValue: A | null | undefined,
 ): Dataway<E, A> {
   return successValue == null ? notAsked : success(successValue);
 }
 
+/**
+ * Constructs a new `Dataway` from a `fp-ts` `Either` type.
+ * If the value is a `Left value` it returns `Failure value`
+ * otherwise it returns the `Right` value wrapped in a `Success`
+ *
+ * | parameter    | Result        |
+ * | ------------ | ------------- |
+ * | Left error   | Failure error |
+ * | Right foo    | Success foo   |
+ *
+ *
+ * ```
+ * import { failure, success, fromEither } from  'dataway';
+ * import { left, right } from 'fp-ts/lib/Either';
+ *
+ *
+ * fromEither(left(foo)) === failure(foo);
+ * fromEither(right(bar)) === success(bar);
+ * ```
+ *
+ * @typeparam E type of the provided Left wrapped value
+ * @typeparam A type of the provided Right wrapped value
+ */
 export const fromEither = <E, A>(either: Either<E, A>) => {
   if (isLeft(either)) {
     return failure<E, A>(either.left);
@@ -109,6 +152,28 @@ export const fromEither = <E, A>(either: Either<E, A>) => {
   return success<E, A>(either.right);
 };
 
+/**
+ * Constructs a new `Dataway` from a `fp-ts` `Option` type.
+ * If the value is a `None` it returns `NotAsked`
+ * otherwise it returns the `Some` value wrapped in a `Success`
+ *
+ * | parameter    | Result        |
+ * | ------------ | ------------- |
+ * | None         | NotAsked      |
+ * | Some foo     | Success foo   |
+ *
+ *
+ * ```
+ * import { failure, success, fromEither } from  'dataway';
+ * import { none, some } from 'fp-ts/lib/Option';
+ *
+ *
+ * fromEither(none) === notAsked;
+ * fromEither(some(foo)) === success(foo);
+ * ```
+ *
+ * @typeparam A type of the provided Some wrapped value
+ */
 export const fromOption = <E>(defaultFailure: E) => <A>(option: Option<A>) => {
   if (isNone(option)) {
     return failure(defaultFailure);
