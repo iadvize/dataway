@@ -191,12 +191,59 @@ export const fromOption = <E>(defaultFailure: E) => <A>(option: Option<A>) => {
   return success(option.value);
 };
 
+/**
+ * apply the function `f` if both arguments are `Success`
+ *
+ * if not, the leftmost argument with the highest priority as defined bellow will be returned
+ *
+ * `Failure` being the highest priority, `Loading` being the lowest
+ *
+ * `Failure -> NotAsked -> Loading`
+ *
+ * ```
+ * import { map2, failure, success } from  'dataway';
+ *
+ * const add = val1 => val2 => val1 + val2;
+ *
+ * map2(add, success(3), success(5)) === success(8);
+ * map2(add, failure('a'), success(5)) === failure('a');
+ * map2(add, failure('a'), failure('b')) === failure('a');
+ * ```
+ *
+ * @param f
+ * @param functorA
+ * @param functorB
+ */
 export const map2 = <E, A, B, C>(
   f: (a: A) => (b: B) => C,
   functorA: Dataway<E, A>,
   functorB: Dataway<E, B>,
 ): Dataway<E, C> => dataway.ap(dataway.map(functorA, f), functorB);
 
+/**
+ * apply the function `f` if all arguments are `Success`
+ *
+ * if not, the leftmost argument with the highest priority as defined bellow will be returned
+ *
+ * `Failure` being the highest priority, `Loading` being the lowest
+ *
+ * `Failure -> NotAsked -> Loading`
+ *
+ * ```
+ * import { map3, failure, success } from  'dataway';
+ *
+ * const cubic = val1 => val2 => val3 => val1 * val2 * val3;
+ *
+ * map3(cubic, success(3), success(5), success(2)) === success(16);
+ * map3(cubic, failure('a'), success(5), loading) === failure('a');
+ * map3(cubic, success(3), loading, notAsked) === notAsked;
+ * ```
+ *
+ * @param f
+ * @param functorA
+ * @param functorB
+ * @param functorC
+ */
 export const map3 = <E, A, B, C, D>(
   f: (a: A) => (b: B) => (c: C) => D,
   functorA: Dataway<E, A>,
@@ -205,6 +252,26 @@ export const map3 = <E, A, B, C, D>(
 ): Dataway<E, D> =>
   dataway.ap(dataway.ap(dataway.map(functorA, f), functorB), functorC);
 
+/**
+ * if both argument are `Success` return a tuple containing both values wrapped in a `Success`
+ *
+ * if not, the leftmost argument with the highest priority as defined bellow will be returned
+ *
+ * `Failure` being the highest priority, `Loading` being the lowest
+ *
+ * `Failure -> NotAsked -> Loading`
+ *
+ * ```
+ * import { append, failure, success } from  'dataway';
+ *
+ * append(success('a'), success('b')) === success(['a', 'b']);
+ * append(failure('a'), success('b')) === failure('a');
+ * append(failure('a'), failure('b')) === failure('a');
+ * ```
+ *
+ * @param functorA
+ * @param functorB
+ */
 export const append = <E, A, B>(
   functorA: Dataway<E, A>,
   functorB: Dataway<E, B>,
