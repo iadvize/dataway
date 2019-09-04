@@ -1,3 +1,7 @@
+/**
+ * @module Dataway
+ */
+
 import { Either, isLeft } from 'fp-ts/lib/Either';
 import { Option, isNone } from 'fp-ts/lib/Option';
 import { Monad2 } from 'fp-ts/lib/Monad';
@@ -9,8 +13,14 @@ declare module 'fp-ts/lib/HKT' {
   }
 }
 
+/**
+ * @hidden
+ */
 export const URI = 'Dataway';
 
+/**
+ * @hidden
+ */
 export type URI = typeof URI;
 
 /**
@@ -262,6 +272,9 @@ export const fold = <E, A, B>(
 };
 
 export const dataway: Monad2<URI> = {
+  /**
+   * @ignore
+   */
   URI,
   of: success,
   /**
