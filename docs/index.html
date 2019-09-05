@@ -1,0 +1,287 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Dataway</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.js" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">Dataway</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="globals.html">Globals</a>
+				</li>
+			</ul>
+			<h1> Dataway</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<a href="#dataway" id="dataway" style="color: inherit; text-decoration: none;">
+					<h1>Dataway</h1>
+				</a>
+				<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
+					<h2>Installation</h2>
+				</a>
+				<pre><code>npm <span class="hljs-keyword">install</span> dataway</code></pre><pre><code>yarn <span class="hljs-keyword">add</span><span class="bash"> dataway</span></code></pre><p><a href="https://iadvize.github.io/dataway/docs">API documentation</a></p>
+				<a href="#introduction" id="introduction" style="color: inherit; text-decoration: none;">
+					<h2>Introduction</h2>
+				</a>
+				<p><code>Dataway</code> is a datastructure representing the four possible states of a remote datasource fetching result.</p>
+				<ul>
+					<li>The remote datasource was NotAsked but eventually will be</li>
+					<li>The remote datasource is Loading</li>
+					<li>The remote datasource fetching has been a Success and a value was retrieved</li>
+					<li>The remote datasource fetching ended up in a Failure and some error information was collected</li>
+				</ul>
+				<p>This aims to solve a classic data management issue often handled either through booleans or complex, unwanted and polluted states. With one entry point and only 4 strongly-typed states, remote data handling becomes much cleaner.</p>
+				<p>Dataway also provides a great api to manipulate, transform and aggregate Dataway values in a safe and optimistic way. This reduces bug and crash occurence while making your code simpler to read.</p>
+				<a href="#example" id="example" style="color: inherit; text-decoration: none;">
+					<h2>Example</h2>
+				</a>
+				<p>Imagine that our application relies on a webservice that provides us with a list of elements, and that our job is to both store the number of elements in the application state for future usage and to display it.</p>
+				<p><a href="https://codesandbox.io/embed/dataway-basic-example-5eeh8?fontsize=14&amp;module=%2Fsrc%2Findex.js">Open in codesandbox.io</a></p>
+				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { fold, notAsked, loading, failure, success } <span class="hljs-keyword">from</span> <span class="hljs-string">"dataway"</span>;
+<span class="hljs-keyword">import</span> stateManager <span class="hljs-keyword">from</span> <span class="hljs-string">"./statemanager"</span>;
+
+<span class="hljs-keyword">const</span> appElement = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">"list"</span>);
+<span class="hljs-keyword">const</span> loadButton = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">"load-button"</span>);
+
+<span class="hljs-keyword">const</span> view = <span class="hljs-function"><span class="hljs-params">state</span> =&gt;</span> {
+  appElement.innerHTML = fold(
+    <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-string">"&lt;p&gt;Click on the load button&lt;/p&gt;"</span>,
+    <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-string">"&lt;p&gt;Loading&lt;/p&gt;"</span>,
+    <span class="hljs-function"><span class="hljs-params">error</span> =&gt;</span> <span class="hljs-string">`&lt;p&gt;something wrong did happen : <span class="hljs-subst">${error}</span>&lt;/p&gt;`</span>,
+    <span class="hljs-function"><span class="hljs-params">success</span> =&gt;</span> <span class="hljs-string">`&lt;ul&gt;<span class="hljs-subst">${success.map(post =&gt; <span class="hljs-string">`&lt;li&gt;<span class="hljs-subst">${post.title}</span>&lt;/li&gt;`</span>)}</span>&lt;/ul&gt;`</span>,
+    state
+  );
+};
+
+<span class="hljs-keyword">const</span> setState = stateManager(view, notAsked);
+
+loadButton.onclick = <span class="hljs-function"><span class="hljs-params">event</span> =&gt;</span> {
+  setState(loading);
+  setTimeout(
+    <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span>
+      fetch(<span class="hljs-string">"https://jsonplaceholder.typicode.com/posts"</span>)
+        .then(<span class="hljs-function"><span class="hljs-params">response</span> =&gt;</span> {
+          <span class="hljs-keyword">if</span> (response.ok) {
+            <span class="hljs-keyword">return</span> response.json();
+          } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">return</span> <span class="hljs-built_in">Promise</span>.reject(
+              <span class="hljs-string">`Request rejected with status <span class="hljs-subst">${response.status}</span>`</span>
+            );
+          }
+        })
+        .then(<span class="hljs-function"><span class="hljs-params">json</span> =&gt;</span> setState(success(json)))
+        .catch(<span class="hljs-function"><span class="hljs-params">error</span> =&gt;</span> setState(failure(error))),
+    <span class="hljs-number">2000</span>
+  );
+};
+</code></pre>
+				<a href="#how-to-use" id="how-to-use" style="color: inherit; text-decoration: none;">
+					<h2>How to use</h2>
+				</a>
+				<p>First you have to create some <code>Dataway</code> values using <code>notAsked</code>, <code>loading</code>, <code>failure(error)</code>, <code>success(value)</code></p>
+				<pre><code class="language-javascript"><span class="hljs-keyword">import</span> { notAsked, failure, success } <span class="hljs-keyword">from</span> <span class="hljs-string">'dataway'</span>
+
+<span class="hljs-keyword">const</span> foo = success(<span class="hljs-string">'Mr Wilson'</span>);
+
+<span class="hljs-keyword">const</span> bar = failure(<span class="hljs-string">'any suited error value'</span>);
+
+<span class="hljs-keyword">const</span> baz = notAsked;</code></pre>
+				<p><a href="https://runkit.com/cateland/how-to-use-1">test on runkit</a></p>
+				<p>Then we can use the provided <code>map</code> api to apply a function on any <code>Success</code> variance of <code>Dataway</code>, wrapping automatically the result in a new <code>Success</code>.</p>
+				<p>If the provided variance of <code>Dataway</code> is not a <code>Success</code>, it will be returned without change, and without executing the function.</p>
+				<p>As a developper it means you do not have to check for <code>Dataway</code> variance before applying a function to its <code>Success</code> value.</p>
+				<pre><code class="language-javascript"><span class="hljs-keyword">const</span> { notAsked, failure, success, map } = <span class="hljs-built_in">require</span>(<span class="hljs-string">'dataway'</span>);
+
+map(<span class="hljs-function"><span class="hljs-params">value</span> =&gt;</span> value.toUpperCase())(success(<span class="hljs-string">'Mr Wilson'</span>));
+<span class="hljs-comment">// =&gt; Success "MR WILSON"</span>
+
+map(<span class="hljs-function"><span class="hljs-params">value</span> =&gt;</span> value.toUpperCase())(failure(<span class="hljs-string">'any suited error value'</span>));
+<span class="hljs-comment">// =&gt; Failure "any suited error value"</span>
+
+map(<span class="hljs-function"><span class="hljs-params">value</span> =&gt;</span> value.toUpperCase())(notAsked);
+<span class="hljs-comment">// =&gt; NotAsked</span></code></pre>
+				<p><a href="https://runkit.com/cateland/how-to-use-2">test on runkit</a></p>
+				<p>Rewrapping the transformed value in a <code>Success</code> or returning the other variance untouched, allows to transform a <code>Dataway</code> value in multiple distinct step wihout risking runtime error due to unexistant values (<code>null | undefined</code>) while keeping the variance of <code>Dataway</code> intact.</p>
+				<pre><code class="language-javascript"><span class="hljs-keyword">const</span> { notAsked, success, map } = <span class="hljs-built_in">require</span>(<span class="hljs-string">'dataway'</span>);
+
+<span class="hljs-keyword">const</span> upperCasedSuccess = map(<span class="hljs-function"><span class="hljs-params">value</span> =&gt;</span> value.toUpperCase())(success(<span class="hljs-string">'Mr Wilson'</span>));
+map(<span class="hljs-function"><span class="hljs-params">value</span> =&gt;</span> value.split(<span class="hljs-string">' '</span>))(upperCasedSuccess);
+<span class="hljs-comment">// =&gt; Success ['MR', 'WILSON']</span>
+
+<span class="hljs-keyword">const</span> foo = map(<span class="hljs-function"><span class="hljs-params">value</span> =&gt;</span> value.toUpperCase())(notAsked);
+map(<span class="hljs-function"><span class="hljs-params">value</span> =&gt;</span> value.split(<span class="hljs-string">' '</span>))(foo);
+<span class="hljs-comment">// =&gt; NotAsked</span></code></pre>
+				<p><a href="https://runkit.com/cateland/how-to-use-3">test on runkit</a></p>
+				<p>To extract and use the <code>Success</code> value you must use the <code>fold</code> API.
+				The following example illustrates how this forces you to consider the four different UIs each state implies.</p>
+				<pre><code class="language-javascript"><span class="hljs-keyword">const</span> { success, failure, notAsked, loading, map, fold } = <span class="hljs-built_in">require</span>(<span class="hljs-string">'dataway'</span>);
+
+<span class="hljs-comment">// =&gt; Success ['MR', 'WILSON']</span>
+<span class="hljs-keyword">const</span> render = <span class="hljs-function"><span class="hljs-params">dataway</span> =&gt;</span> fold(
+  <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-string">"&lt;p&gt;Click on the load button&lt;/p&gt;"</span>,
+  () =&gt; <span class="hljs-string">"&lt;p&gt;Loading&lt;/p&gt;"</span>,
+  error =&gt; <span class="hljs-string">`&lt;p&gt;something wrong did happen : <span class="hljs-subst">${error}</span>&lt;/p&gt;`</span>,
+  success =&gt; <span class="hljs-string">`&lt;p&gt;<span class="hljs-subst">${success}</span>&lt;/p&gt;`</span>,
+  dataway
+);
+render(success(<span class="hljs-string">'Mr Wilson'</span>));
+<span class="hljs-comment">// =&gt; &lt;p&gt;Mr Wilson&lt;/p&gt;</span>
+render(failure(<span class="hljs-string">'Ooops failed to fetch Mr Wilson data'</span>));
+<span class="hljs-comment">// =&gt; &lt;p&gt;something wrong did happen : Ooops failed to fetch Mr Wilson data&lt;/p&gt;</span>
+render(notAsked);
+<span class="hljs-comment">// =&gt; '&lt;p&gt;Click on the load button&lt;/p&gt;'</span>
+render(loading);
+<span class="hljs-comment">// =&gt; '&lt;p&gt;Loading&lt;/p&gt;'</span></code></pre>
+				<p><a href="https://runkit.com/cateland/how-to-use-4">test on runkit</a></p>
+				<p>This is really great to easily create consistent UIs.</p>
+				<a href="#tldr" id="tldr" style="color: inherit; text-decoration: none;">
+					<h2>TL;DR</h2>
+				</a>
+				<p><code>Dataway</code> offers a rich API to aggregate multiple &quot;dataways&quot; or to handle computation failure on your dataway values.</p>
+				<p><code>Dataway</code> is written in typescript with thoughtful type description, enabling you to use it in a typescript environnement without hassle while keeping great type safety.</p>
+				<p><code>Dataway</code> also offers compatibility with great libraries such as <a href="https://ramdajs.com">Ramda</a>, and <a href="https://gcanti.github.io/fp-ts/">fp-ts</a></p>
+				<p>You can check and play with several examples</p>
+				<ul>
+					<li><a href="https://codesandbox.io/embed/dataway-basic-example-5eeh8?fontsize=14&amp;module=%2Fsrc%2Findex.js">Basic example</a></li>
+					<li><a href="https://codesandbox.io/embed/dataway-basic-transformation-zj1th?fontsize=14&amp;module=%2Fsrc%2Findex.js">Map example</a></li>
+					<li><a href="https://codesandbox.io/embed/dataway-two-remote-source-yopzb?fontsize=14&amp;module=%2Fsrc%2Findex.js">Aggregation example</a></li>
+					<li><a href="https://codesandbox.io/embed/dataway-validation-and-transformation-dhftw?fontsize=14&amp;module=%2Fsrc%2Findex.js">Validation Example</a></li>
+				</ul>
+				<p><a href="https://iadvize.github.io/dataway/docs">API docs</a></p>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="globals.html"><em>Globals</em></a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_main_.html">"main"</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
+				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+				<li class="tsd-kind-enum-member"><span class="tsd-kind-icon">Enumeration member</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-enum"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-enum"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-interface"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class"><span class="tsd-kind-icon">Accessor</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-class"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
+				<li class="tsd-kind-call-signature tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="assets/js/search.js"><' + '/script>');</script>
+</body>
+</html>

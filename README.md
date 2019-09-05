@@ -2,201 +2,162 @@
 
 ## Installation
 
-`npm install dataway`
+```
+npm install dataway
+```
 
-`yarn add dataway`
+```
+yarn add dataway
+```
+
+[API documentation](https://iadvize.github.io/dataway/docs)
 
 ## Introduction
 
-`Dataway` is an Algebra meant to represent any fetched data,
-as such it streamline interaction with a fetched data in any of the following state, `NotAsked`, `Loading`, `Failure`, `Success`.
+`Dataway` is a datastructure representing the four possible states of a remote datasource fetching result.
+* The remote datasource was NotAsked but eventually will be
+* The remote datasource is Loading
+* The remote datasource fetching has been a Success and a value was retrieved
+* The remote datasource fetching ended up in a Failure and some error information was collected
 
-This allow you to interact safely with all those state without having to write multiple conditionnal branch tourought your code.
+This aims to solve a classic data management issue often handled either through booleans or complex, unwanted and polluted states. With one entry point and only 4 strongly-typed states, remote data handling becomes much cleaner.
+
+Dataway also provides a great api to manipulate, transform and aggregate Dataway values in a safe and optimistic way. This reduces bug and crash occurence while making your code simpler to read.
 
 ## Example
 
-Imagine that our application rely on a webservice that provide us with a list of elements, and that our job is to both store the number of element in the application state for future usage, and display it.
+Imagine that our application relies on a webservice that provides us with a list of elements, and that our job is to both store the number of elements in the application state for future usage and to display it.
 
-```javascript
-import { dataway } from 'dataway';
+[Open in codesandbox.io](https://codesandbox.io/embed/dataway-basic-example-5eeh8?fontsize=14&module=%2Fsrc%2Findex.js)
+```typescript
+import { fold, notAsked, loading, failure, success } from "dataway";
+import stateManager from "./statemanager";
 
-// setup you initial state
-let asyncValue = dataway.notAsked();
+const appElement = document.getElementById("list");
+const loadButton = document.getElementById("load-button");
 
-function loadBlogPosts() {
-  asyncValue = dataway.loading();
-  fetch('/blogposts')
-    .then(function(response) {
-      if (response.ok) {
-        try {
-          return response.json();
-        } catch (error) {
-          throw new Error('Response format was not ok.');
-        }
-        asyncValue = dataway.success(response);
-      } else {
-        throw new Error('Network response was not ok.');
-      }
-    })
-    .then(function(values) {
-      asyncValue = dataway.success(values);
-    })
-    .catch(function(error) {
-      asyncvalue = dataway.failure(error);
-    });
-}
-
-asyncvalue
-  // when working with the value you can safely ignore the real status of the value
-  .map(function(blogposts) {
-    return blogposts.length;
-  })
-  // when releasing the value you must handle all four cases
-  .fold(
-    'Number of blog posts not loaded',
-    'Number of blog posts loading',
-    function(error) {
-      `Number of blog posts can't be shown because : ${error}`;
-    },
-    function(value) {
-      return `There is ${value} blogposts`;
-    },
+const view = state => {
+  appElement.innerHTML = fold(
+    () => "<p>Click on the load button</p>",
+    () => "<p>Loading</p>",
+    error => `<p>something wrong did happen : ${error}</p>`,
+    success => `<ul>${success.map(post => `<li>${post.title}</li>`)}</ul>`,
+    state
   );
+};
+
+const setState = stateManager(view, notAsked);
+
+loadButton.onclick = event => {
+  setState(loading);
+  setTimeout(
+    () =>
+      fetch("https://jsonplaceholder.typicode.com/posts")
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            return Promise.reject(
+              `Request rejected with status ${response.status}`
+            );
+          }
+        })
+        .then(json => setState(success(json)))
+        .catch(error => setState(failure(error))),
+    2000
+  );
+};
+
 ```
 
 ## How to use
 
-The different algebras used can be used in the following fashion:
-Using the instance method
+First you have to create some `Dataway` values using `notAsked`, `loading`, `failure(error)`, `success(value)`
 
 ```javascript
-const stringLength = string => string.length;
-success('abc').map(stringLength);
-// => Success(3)
-```
+import { notAsked, failure, success } from 'dataway'
 
-The provided map implementation
+const foo = success('Mr Wilson');
+
+const bar = failure('any suited error value');
+
+const baz = notAsked;
+```
+[test on runkit](https://runkit.com/cateland/how-to-use-1)
+
+Then we can use the provided `map` api to apply a function on any `Success` variance of `Dataway`, wrapping automatically the result in a new `Success`.
+
+If the provided variance of `Dataway` is not a `Success`, it will be returned without change, and without executing the function.
+
+As a developper it means you do not have to check for `Dataway` variance before applying a function to its `Success` value.
 
 ```javascript
-dataway.map(success('abc'), stringLength);
-// => Success(3)
-```
+const { notAsked, failure, success, map } = require('dataway');
 
-Or any fantasyland complient library
+map(value => value.toUpperCase())(success('Mr Wilson'));
+// => Success "MR WILSON"
+
+map(value => value.toUpperCase())(failure('any suited error value'));
+// => Failure "any suited error value"
+
+map(value => value.toUpperCase())(notAsked);
+// => NotAsked
+```
+[test on runkit](https://runkit.com/cateland/how-to-use-2)
+
+Rewrapping the transformed value in a `Success` or returning the other variance untouched, allows to transform a `Dataway` value in multiple distinct step wihout risking runtime error due to unexistant values (`null | undefined`) while keeping the variance of `Dataway` intact.
 
 ```javascript
-import map from 'ramda/map';
-map(success('abc'), stringLength);
-// => Success(3)
+const { notAsked, success, map } = require('dataway');
+
+const upperCasedSuccess = map(value => value.toUpperCase())(success('Mr Wilson'));
+map(value => value.split(' '))(upperCasedSuccess);
+// => Success ['MR', 'WILSON']
+
+const foo = map(value => value.toUpperCase())(notAsked);
+map(value => value.split(' '))(foo);
+// => NotAsked
 ```
+[test on runkit](https://runkit.com/cateland/how-to-use-3)
 
-# API
-
-## Fold
-
-At some point you will want to pull the trigger and use the values tucked inside,
-but since we want you to have a safe code, you will have to provide handler for each case.
-
-The following example could be used with react.
+To extract and use the `Success` value you must use the `fold` API.
+The following example illustrates how this forces you to consider the four different UIs each state implies.
 
 ```javascript
-dataway
-  .map(success('abc'), stringLength)
-  .fold(
-    () => <NoData />,
-    () => <Pending />,
-    error => <Failure error={error} />,
-    data => <span>{data}</span>,
-  );
+const { success, failure, notAsked, loading, map, fold } = require('dataway');
+
+// => Success ['MR', 'WILSON']
+const render = dataway => fold(
+  () => "<p>Click on the load button</p>",
+  () => "<p>Loading</p>",
+  error => `<p>something wrong did happen : ${error}</p>`,
+  success => `<p>${success}</p>`,
+  dataway
+);
+render(success('Mr Wilson'));
+// => <p>Mr Wilson</p>
+render(failure('Ooops failed to fetch Mr Wilson data'));
+// => <p>something wrong did happen : Ooops failed to fetch Mr Wilson data</p>
+render(notAsked);
+// => '<p>Click on the load button</p>'
+render(loading);
+// => '<p>Loading</p>'
 ```
+[test on runkit](https://runkit.com/cateland/how-to-use-4)
 
-## Functor
+This is really great to easily create consistent UIs.
 
-The functor interface allow you to map over the `Success` value of `Dataway`.
+## TL;DR
+`Dataway` offers a rich API to aggregate multiple "dataways" or to handle computation failure on your dataway values.
 
-```javascript
-const stringLength = string => string.length;
-dataway.map(success('abc'), stringLength);
-// => Success(3)
-dataway.map(failure('xyz'), stringLength);
-// => Failure('xyz')
-dataway.map(loading(), stringLength);
-// => Loading()
-dataway.map(notAsked(), stringLength);
-// => NotAsked()
-```
+`Dataway` is written in typescript with thoughtful type description, enabling you to use it in a typescript environnement without hassle while keeping great type safety.
 
-## Apply
+`Dataway` also offers compatibility with great libraries such as [Ramda](https://ramdajs.com), and [fp-ts](https://gcanti.github.io/fp-ts/)
 
-The apply interface allow you to safely apply Dataway value to another one
+You can check and play with several examples
+* [Basic example](https://codesandbox.io/embed/dataway-basic-example-5eeh8?fontsize=14&module=%2Fsrc%2Findex.js)
+* [Map example](https://codesandbox.io/embed/dataway-basic-transformation-zj1th?fontsize=14&module=%2Fsrc%2Findex.js)
+* [Aggregation example](https://codesandbox.io/embed/dataway-two-remote-source-yopzb?fontsize=14&module=%2Fsrc%2Findex.js)
+* [Validation Example](https://codesandbox.io/embed/dataway-validation-and-transformation-dhftw?fontsize=14&module=%2Fsrc%2Findex.js)
 
-```javascript
-const f = (s1: string, s2: string) => `${s1}${s2}`;
-success('abc')
-  .map(f)
-  .ap(success('def'));
-// => success('abcdef')
-success('abc')
-  .map(f)
-  .ap(failure('xyz'));
-// => failure('xyz');
-success('abc')
-  .map(f)
-  .ap(loading());
-// => loading();
-success('abc')
-  .map(f)
-  .ap(notAsked());
-// => notAsked();
-```
-
-You can note a pattern here that will apply to many function down this documentation.
-when composing with multiple `Dataway` the following rules apply in order:
-
-- only if all are `success`, the result is a `success`.
-- if one is in `failure`, the result is a `failure`.
-- the first `failure` will be used to generate the end result `failure`.
-- if one is `loading`, the result is a `loading`.
-- if one is `notAsked`, the result is `notAsked`.
-
-`Apply` is a very interesting tool from wich you can implement many usefull function.
-Append
-
-```javascript
-const append = (dataway1, dataway2) =>
-  dataway1.map(value1 => value2 => [value1, value2]).ap(dataway2);
-append(success('abc'), success('def'));
-// => success(['abc', 'def'])
-append(success('abc'), failure('xyz'));
-// => failure('xyz')
-```
-
-Map2
-
-```javascript
-const f = s1 => s2 => `${s1}${s2}`;
-const map2 = (f, dataway1, dataway2) => ap(dataway1.map(f), dataway2);
-
-map2(f, success('abc'), success('def'));
-// => success('abcdef')
-map2(f, success('abc'), failure('xyz'));
-// => failure('xyz')
-```
-
-## Chain
-
-The chain function is usefull for applying one or many computation that may fail.
-A good example of that is validating the content of `Dataway`
-```javascript
-const data = success([{}, {}, {}]);
-data
-  .chain(value =>
-    Array.isArray(value) ? success(value) : failure('should be an array'),
-  )
-  .chain(value =>
-    value[0] !== undefined ? success(value) : failure('should not be empty'),
-  );
-// => success([{}, {}, {}])
-```
-
-# FAQ
+[API docs](https://iadvize.github.io/dataway/docs)

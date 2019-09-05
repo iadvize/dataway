@@ -1,6 +1,6 @@
 {
   "name": "dataway",
-  "version": "1.1.2",
+  "version": "2.0.0",
   "main": "dist/dataway.cjs.js",
   "module": "dist/dataway.esm.js",
   "browser": "dist/dataway.umd.js",
@@ -12,7 +12,8 @@
     "test": "jest",
     "pretest": "npm run build",
     "prettier-check": "prettier --check '{src,test}/**/*.ts'",
-    "prettier-fix": "prettier --write '{src,test}/**/*.ts'"
+    "prettier-fix": "prettier --write '{src,test}/**/*.ts'",
+    "generate-doc": "typedoc --name Dataway"
   },
   "files": [
     "dist"
@@ -31,9 +32,10 @@
     "rollup-plugin-typescript2": "^0.21.1",
     "ts-jest": "^24.0.2",
     "ts-node": "^8.2.0",
-    "typescript": "^3.4.5"
+    "typedoc": "^0.15.0",
+    "typescript": "^3.6.2"
   },
   "dependencies": {
-    "fp-ts": "^1.18.2"
+    "fp-ts": "^2.0.5"
   }
 }
