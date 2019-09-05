@@ -83,6 +83,7 @@ const bar = failure('any suited error value');
 
 const baz = notAsked;
 ```
+[test on runkit](https://runkit.com/cateland/how-to-use-1)
 
 Then we can use the provided `map` api to apply a function on any `Success` variance of `Dataway`, wrapping automatically the result in a new `Success`.
 
@@ -91,37 +92,39 @@ If the provided variance of `Dataway` is not a `Success`, it will be returned wi
 As a developper it means you do not have to check for `Dataway` variance before applying a function to its `Success` value.
 
 ```javascript
-import { notAsked, failure, success, map } from 'dataway'
+const { notAsked, failure, success, map } = require('dataway');
 
-map(value => value.uppercase, success('Mr Wilson'));
+map(value => value.toUpperCase())(success('Mr Wilson'));
 // => Success "MR WILSON"
 
-map(value => value.uppercase, failure('any suited error value'));
+map(value => value.toUpperCase())(failure('any suited error value'));
 // => Failure "any suited error value"
 
-map(value => value.uppercase, notAsked);
+map(value => value.toUpperCase())(notAsked);
 // => NotAsked
 ```
+[test on runkit](https://runkit.com/cateland/how-to-use-2)
 
 Rewrapping the transformed value in a `Success` or returning the other variance untouched, allows to transform a `Dataway` value in multiple distinct step wihout risking runtime error due to unexistant values (`null | undefined`) while keeping the variance of `Dataway` intact.
 
 ```javascript
-import { notAsked, success, map } from 'dataway'
+const { notAsked, success, map } = require('dataway');
 
-const upperCasedSuccess = map(value => value.uppercase, success('Mr Wilson'));
-map(value => value.split(' '), upperCasedSuccess);
+const upperCasedSuccess = map(value => value.toUpperCase())(success('Mr Wilson'));
+map(value => value.split(' '))(upperCasedSuccess);
 // => Success ['MR', 'WILSON']
 
-const foo = map(value => value.uppercase, notAsked);
-map(value => value.split(' '), foo);
+const foo = map(value => value.toUpperCase())(notAsked);
+map(value => value.split(' '))(foo);
 // => NotAsked
 ```
+[test on runkit](https://runkit.com/cateland/how-to-use-3)
 
 To extract and use the `Success` value you must use the `fold` API.
 The following example illustrates how this forces you to consider the four different UIs each state implies.
 
 ```javascript
-import { success, map, fold } from 'dataway'
+const { success, failure, notAsked, loading, map, fold } = require('dataway');
 
 // => Success ['MR', 'WILSON']
 const render = dataway => fold(
@@ -140,6 +143,7 @@ render(notAsked);
 render(loading);
 // => '<p>Loading</p>'
 ```
+[test on runkit](https://runkit.com/cateland/how-to-use-4)
 
 This is really great to easily create consistent UIs.
 

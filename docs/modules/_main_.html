@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>&quot;main&quot; | dataway</title>
+	<title>&quot;main&quot; | Dataway</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">dataway</a>
+					<a href="../index.html" class="title">Dataway</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -81,13 +81,6 @@
 							<h3>Type aliases</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-type-alias tsd-parent-kind-external-module tsd-has-type-parameter"><a href="_main_.html#dataway" class="tsd-kind-icon">Dataway</a></li>
-								<li class="tsd-kind-type-alias tsd-parent-kind-external-module"><a href="_main_.html#uri" class="tsd-kind-icon">URI</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section ">
-							<h3>Variables</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-variable tsd-parent-kind-external-module"><a href="_main_.html#uri-1" class="tsd-kind-icon">URI</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -127,41 +120,42 @@
 					<div class="tsd-signature tsd-kind-icon">Dataway&lt;E, A&gt;<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_main_.notasked.html" class="tsd-signature-type">NotAsked</a><span class="tsd-signature-symbol"> | </span><a href="../interfaces/_main_.loading.html" class="tsd-signature-type">Loading</a><span class="tsd-signature-symbol"> | </span><a href="../interfaces/_main_.failure.html" class="tsd-signature-type">Failure</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/_main_.success.html" class="tsd-signature-type">Success</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/iadvize/dataway/blob/4f12bc6/src/main.ts#L34">main.ts:34</a></li>
+							<li>Defined in <a href="https://github.com/iadvize/dataway/blob/fc15c11/src/main.ts#L81">main.ts:81</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>This type represents the four possible states of a remote datasource
+							fetching result.</p>
+							<ol>
+								<li>The data was not asked yet but eventually will be</li>
+								<li>The data is being loaded, it can take time</li>
+								<li>The data fetching ended up in error at any time during the loading or processing of it</li>
+								<li>The data has been successfully retrieved.</li>
+							</ol>
+						</div>
+						<p>The order of transformation should look like this
+						<code>NotAsked</code> -&gt; <code>Loading</code> -&gt; <code>Error&lt;E&gt;</code> | <code>Success&lt;A&gt;</code></p>
+					</div>
 					<h4 class="tsd-type-parameters-title">Type parameters</h4>
 					<ul class="tsd-type-parameters">
 						<li>
 							<h4>E</h4>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>the expected error type</p>
+								</div>
+							</div>
 						</li>
 						<li>
 							<h4>A</h4>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>the expected value type</p>
+								</div>
+							</div>
 						</li>
 					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-external-module">
-					<a name="uri" class="tsd-anchor"></a>
-					<h3>URI</h3>
-					<div class="tsd-signature tsd-kind-icon">URI<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"Dataway"</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/iadvize/dataway/blob/4f12bc6/src/main.ts#L14">main.ts:14</a></li>
-						</ul>
-					</aside>
-				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Variables</h2>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module">
-					<a name="uri-1" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> URI</h3>
-					<div class="tsd-signature tsd-kind-icon">URI<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"Dataway"</span><span class="tsd-signature-symbol"> =&nbsp;&quot;Dataway&quot;</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/iadvize/dataway/blob/4f12bc6/src/main.ts#L12">main.ts:12</a></li>
-						</ul>
-					</aside>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -170,19 +164,32 @@
 					<a name="append" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> append</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">append&lt;L, A, B&gt;<span class="tsd-signature-symbol">(</span>functorA<span class="tsd-signature-symbol">: </span><a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">L</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span>, functorB<span class="tsd-signature-symbol">: </span><a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">L</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">B</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">L</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">B</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">append&lt;E, A, B&gt;<span class="tsd-signature-symbol">(</span>functorA<span class="tsd-signature-symbol">: </span><a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span>, functorB<span class="tsd-signature-symbol">: </span><a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">B</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">B</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/iadvize/dataway/blob/4f12bc6/src/main.ts#L96">main.ts:96</a></li>
+									<li>Defined in <a href="https://github.com/iadvize/dataway/blob/fc15c11/src/main.ts#L275">main.ts:275</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>if both argument are <code>Success</code> return a tuple containing both values wrapped in a <code>Success</code></p>
+								</div>
+								<p>if not, the leftmost argument with the highest priority as defined bellow will be returned</p>
+								<p><code>Failure</code> being the highest priority, <code>Loading</code> being the lowest</p>
+								<p><code>Failure -&gt; NotAsked -&gt; Loading</code></p>
+								<pre><code><span class="hljs-keyword">import</span> { <span class="hljs-keyword">append</span>, failure, success } <span class="hljs-keyword">from</span>  <span class="hljs-string">'dataway'</span>;
+
+<span class="hljs-keyword">append</span>(success(<span class="hljs-string">'a'</span>), success(<span class="hljs-string">'b'</span>)) === success([<span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>]);
+<span class="hljs-keyword">append</span>(failure(<span class="hljs-string">'a'</span>), success(<span class="hljs-string">'b'</span>)) === failure(<span class="hljs-string">'a'</span>);
+<span class="hljs-keyword">append</span>(failure(<span class="hljs-string">'a'</span>), failure(<span class="hljs-string">'b'</span>)) === failure(<span class="hljs-string">'a'</span>);</code></pre>
+							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
-									<h4>L</h4>
+									<h4>E</h4>
 								</li>
 								<li>
 									<h4>A</h4>
@@ -194,13 +201,17 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>functorA: <a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">L</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>functorA: <a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 								<li>
-									<h5>functorB: <a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">L</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">B</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>functorB: <a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">B</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+										</div>
+									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">L</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">B</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">B</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -214,7 +225,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/iadvize/dataway/blob/4f12bc6/src/main.ts#L40">main.ts:40</a></li>
+									<li>Defined in <a href="https://github.com/iadvize/dataway/blob/fc15c11/src/main.ts#L87">main.ts:87</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -240,25 +251,61 @@
 					<a name="fold" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> fold</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">fold&lt;L, A, B&gt;<span class="tsd-signature-symbol">(</span>onNotAsked<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, onLoading<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, onFailure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, onSuccess<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, monadA<span class="tsd-signature-symbol">: </span><a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">L</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">B</span></li>
+						<li class="tsd-signature tsd-kind-icon">fold&lt;E, A, B&gt;<span class="tsd-signature-symbol">(</span>onNotAsked<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, onLoading<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, onFailure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, onSuccess<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, monadA<span class="tsd-signature-symbol">: </span><a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">B</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/iadvize/dataway/blob/4f12bc6/src/main.ts#L106">main.ts:106</a></li>
+									<li>Defined in <a href="https://github.com/iadvize/dataway/blob/fc15c11/src/main.ts#L319">main.ts:319</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Fold is the only way to attempt to safely extract the data,
+										because it force you to consider the four variations of the dataway state.
+										The following example demonstrate how useful this is when trying to render a
+									search result. We may want to notify the user why no result did show up on his screen</p>
+									<ol>
+										<li>The search was not initiated by the user (he didn&#39;t click on the search button).</li>
+										<li>The search could be initiated but not done yet (search can take time),
+										a loading visual hint could be displayed.</li>
+										<li>The search could end up in error (timeout, connectivity issue or plain server crash),
+										an error message can be shown or a message to try again.</li>
+										<li>The search can success and we want to display the result to the user.</li>
+									</ol>
+								</div>
+								<pre><code><span class="hljs-keyword">import</span> { dataway, fold } <span class="hljs-keyword">from</span> <span class="hljs-string">"dataway"</span>;
+
+<span class="hljs-keyword">const</span> searchResult = dataway.of([<span class="hljs-string">"result1"</span>, <span class="hljs-string">"result2"</span>, <span class="hljs-string">"result3"</span>, <span class="hljs-string">"result4"</span>]);
+
+fold(
+  <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-string">"&lt;span&gt;use the Search button for nice code snippet&lt;/span&gt;"</span>,
+  <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-string">"&lt;span&gt;Search initiated, awesome code snippets incomings !&lt;/span&gt;"</span>,
+  <span class="hljs-function"><span class="hljs-params">error</span> =&gt;</span> <span class="hljs-string">`&lt;span&gt;ho no ! <span class="hljs-subst">${error}</span> did happen, please retry&lt;/span&gt;`</span>,
+  <span class="hljs-function"><span class="hljs-params">results</span> =&gt;</span> <span class="hljs-string">`&lt;ul&gt;<span class="hljs-subst">${results.map(result =&gt; <span class="hljs-string">`&lt;li&gt;<span class="hljs-subst">${result}</span>&lt;/li&gt;`</span>)}</span>&lt;/ul&gt;`</span>,
+  searchResult
+);</code></pre>
+							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
-									<h4>L</h4>
+									<h4>E</h4>
+									<div class="tsd-comment tsd-typography">
+										<p>the error type you expect</p>
+									</div>
 								</li>
 								<li>
 									<h4>A</h4>
+									<div class="tsd-comment tsd-typography">
+										<p>the success type you expect</p>
+									</div>
 								</li>
 								<li>
 									<h4>B</h4>
+									<div class="tsd-comment tsd-typography">
+										<p>the type of value that you want to produce</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -298,14 +345,14 @@
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter-siganture">
 											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>failure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">L</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">B</span></li>
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>failure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">B</span></li>
 											</ul>
 											<ul class="tsd-descriptions">
 												<li class="tsd-description">
 													<h4 class="tsd-parameters-title">Parameters</h4>
 													<ul class="tsd-parameters">
 														<li>
-															<h5>failure: <span class="tsd-signature-type">L</span></h5>
+															<h5>failure: <span class="tsd-signature-type">E</span></h5>
 														</li>
 													</ul>
 													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">B</span></h4>
@@ -336,7 +383,11 @@
 									</ul>
 								</li>
 								<li>
-									<h5>monadA: <a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">L</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>monadA: <a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+										</div>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">B</span></h4>
@@ -347,35 +398,70 @@
 					<a name="fromeither" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> from<wbr>Either</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">from<wbr>Either&lt;L, A&gt;<span class="tsd-signature-symbol">(</span>either<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Either</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">L</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_main_.notasked.html" class="tsd-signature-type">NotAsked</a><span class="tsd-signature-symbol"> | </span><a href="../interfaces/_main_.loading.html" class="tsd-signature-type">Loading</a><span class="tsd-signature-symbol"> | </span><a href="../interfaces/_main_.failure.html" class="tsd-signature-type">Failure</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">L</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/_main_.success.html" class="tsd-signature-type">Success</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">from<wbr>Either&lt;E, A&gt;<span class="tsd-signature-symbol">(</span>either<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Either</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_main_.notasked.html" class="tsd-signature-type">NotAsked</a><span class="tsd-signature-symbol"> | </span><a href="../interfaces/_main_.loading.html" class="tsd-signature-type">Loading</a><span class="tsd-signature-symbol"> | </span><a href="../interfaces/_main_.failure.html" class="tsd-signature-type">Failure</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/_main_.success.html" class="tsd-signature-type">Success</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/iadvize/dataway/blob/4f12bc6/src/main.ts#L67">main.ts:67</a></li>
+									<li>Defined in <a href="https://github.com/iadvize/dataway/blob/fc15c11/src/main.ts#L157">main.ts:157</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Constructs a new <code>Dataway</code> from a <code>fp-ts</code> <code>Either</code> type.
+										If the value is a <code>Left value</code> it returns <code>Failure value</code>
+									otherwise it returns the <code>Right</code> value wrapped in a <code>Success</code></p>
+								</div>
+								<table>
+									<thead>
+										<tr>
+											<th>parameter</th>
+											<th>Result</th>
+										</tr>
+									</thead>
+									<tbody><tr>
+											<td>Left error</td>
+											<td>Failure error</td>
+										</tr>
+										<tr>
+											<td>Right foo</td>
+											<td>Success foo</td>
+										</tr>
+								</tbody></table>
+								<pre><code><span class="hljs-keyword">import</span> { failure, success, fromEither } <span class="hljs-keyword">from</span>  <span class="hljs-string">'dataway'</span>;
+<span class="hljs-keyword">import</span> { left, right } <span class="hljs-keyword">from</span> <span class="hljs-string">'fp-ts/lib/Either'</span>;
+
+
+fromEither(left(foo)) === failure(foo);
+fromEither(right(bar)) === success(bar);</code></pre>
+							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
-									<h4>L</h4>
+									<h4>E</h4>
+									<div class="tsd-comment tsd-typography">
+										<p>type of the provided Left wrapped value</p>
+									</div>
 								</li>
 								<li>
 									<h4>A</h4>
+									<div class="tsd-comment tsd-typography">
+										<p>type of the provided Right wrapped value</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>either: <span class="tsd-signature-type">Either</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">L</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>either: <span class="tsd-signature-type">Either</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_main_.notasked.html" class="tsd-signature-type">NotAsked</a>
 								<span class="tsd-signature-symbol"> | </span>
 								<a href="../interfaces/_main_.loading.html" class="tsd-signature-type">Loading</a>
 								<span class="tsd-signature-symbol"> | </span>
-								<a href="../interfaces/_main_.failure.html" class="tsd-signature-type">Failure</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">L</span><span class="tsd-signature-symbol">&gt;</span>
+								<a href="../interfaces/_main_.failure.html" class="tsd-signature-type">Failure</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">&gt;</span>
 								<span class="tsd-signature-symbol"> | </span>
 								<a href="../interfaces/_main_.success.html" class="tsd-signature-type">Success</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span>
 							</h4>
@@ -392,9 +478,40 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/iadvize/dataway/blob/4f12bc6/src/main.ts#L61">main.ts:61</a></li>
+									<li>Defined in <a href="https://github.com/iadvize/dataway/blob/fc15c11/src/main.ts#L128">main.ts:128</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Constructs a new <code>Dataway</code> from a nullable type.
+										If the value is <code>null</code> or <code>undefined</code> it returns <code>NotAsked</code>,
+									otherwise it returns the value wrapped in a <code>Success</code></p>
+								</div>
+								<table>
+									<thead>
+										<tr>
+											<th>parameter</th>
+											<th>Result</th>
+										</tr>
+									</thead>
+									<tbody><tr>
+											<td>null</td>
+											<td>NotAsked</td>
+										</tr>
+										<tr>
+											<td>undefined</td>
+											<td>NotAsked</td>
+										</tr>
+										<tr>
+											<td>foo</td>
+											<td>Success foo</td>
+										</tr>
+								</tbody></table>
+								<pre><code><span class="hljs-keyword">import</span> { notAsked, success, fromNullable } <span class="hljs-keyword">from</span>  <span class="hljs-string">'dataway'</span>;
+
+fromNullable(<span class="hljs-literal">null</span>) === notAsked;
+fromNullable(<span class="hljs-string">'foo'</span>) === success(<span class="hljs-string">'foo'</span>);</code></pre>
+							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
@@ -402,6 +519,9 @@
 								</li>
 								<li>
 									<h4>A</h4>
+									<div class="tsd-comment tsd-typography">
+										<p>type of the provided value</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -418,25 +538,54 @@
 					<a name="fromoption" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> from<wbr>Option</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">from<wbr>Option&lt;L&gt;<span class="tsd-signature-symbol">(</span>defaultFailure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">L</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">(Anonymous function)</span></li>
+						<li class="tsd-signature tsd-kind-icon">from<wbr>Option&lt;E&gt;<span class="tsd-signature-symbol">(</span>defaultFailure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">(Anonymous function)</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/iadvize/dataway/blob/4f12bc6/src/main.ts#L75">main.ts:75</a></li>
+									<li>Defined in <a href="https://github.com/iadvize/dataway/blob/fc15c11/src/main.ts#L187">main.ts:187</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Constructs a new <code>Dataway</code> from a <code>fp-ts</code> <code>Option</code> type.
+										If the value is a <code>None</code> it returns <code>NotAsked</code>
+									otherwise it returns the <code>Some</code> value wrapped in a <code>Success</code></p>
+								</div>
+								<table>
+									<thead>
+										<tr>
+											<th>parameter</th>
+											<th>Result</th>
+										</tr>
+									</thead>
+									<tbody><tr>
+											<td>None</td>
+											<td>NotAsked</td>
+										</tr>
+										<tr>
+											<td>Some foo</td>
+											<td>Success foo</td>
+										</tr>
+								</tbody></table>
+								<pre><code><span class="hljs-keyword">import</span> { failure, success, fromEither } <span class="hljs-keyword">from</span>  <span class="hljs-string">'dataway'</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-keyword">none</span>, <span class="hljs-keyword">some</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'fp-ts/lib/Option'</span>;
+
+
+fromEither(<span class="hljs-keyword">none</span>) === notAsked;
+fromEither(<span class="hljs-keyword">some</span>(foo)) === success(foo);</code></pre>
+							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
-									<h4>L</h4>
+									<h4>E</h4>
 								</li>
 							</ul>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>defaultFailure: <span class="tsd-signature-type">L</span></h5>
+									<h5>defaultFailure: <span class="tsd-signature-type">E</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">(Anonymous function)</span></h4>
@@ -447,19 +596,19 @@
 					<a name="isfailure" class="tsd-anchor"></a>
 					<h3>is<wbr>Failure</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">is<wbr>Failure&lt;L, A&gt;<span class="tsd-signature-symbol">(</span>monadA<span class="tsd-signature-symbol">: </span><a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">L</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Failure&lt;E, A&gt;<span class="tsd-signature-symbol">(</span>monadA<span class="tsd-signature-symbol">: </span><a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/iadvize/dataway/blob/4f12bc6/src/main.ts#L54">main.ts:54</a></li>
+									<li>Defined in <a href="https://github.com/iadvize/dataway/blob/fc15c11/src/main.ts#L101">main.ts:101</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
-									<h4>L</h4>
+									<h4>E</h4>
 								</li>
 								<li>
 									<h4>A</h4>
@@ -468,7 +617,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>monadA: <a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">L</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>monadA: <a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -479,19 +628,19 @@
 					<a name="isloading" class="tsd-anchor"></a>
 					<h3>is<wbr>Loading</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">is<wbr>Loading&lt;L, A&gt;<span class="tsd-signature-symbol">(</span>monadA<span class="tsd-signature-symbol">: </span><a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">L</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Loading&lt;E, A&gt;<span class="tsd-signature-symbol">(</span>monadA<span class="tsd-signature-symbol">: </span><a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/iadvize/dataway/blob/4f12bc6/src/main.ts#L51">main.ts:51</a></li>
+									<li>Defined in <a href="https://github.com/iadvize/dataway/blob/fc15c11/src/main.ts#L98">main.ts:98</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
-									<h4>L</h4>
+									<h4>E</h4>
 								</li>
 								<li>
 									<h4>A</h4>
@@ -500,7 +649,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>monadA: <a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">L</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>monadA: <a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -511,19 +660,19 @@
 					<a name="isnotasked" class="tsd-anchor"></a>
 					<h3>is<wbr>Not<wbr>Asked</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">is<wbr>Not<wbr>Asked&lt;L, A&gt;<span class="tsd-signature-symbol">(</span>monadA<span class="tsd-signature-symbol">: </span><a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">L</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Not<wbr>Asked&lt;E, A&gt;<span class="tsd-signature-symbol">(</span>monadA<span class="tsd-signature-symbol">: </span><a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/iadvize/dataway/blob/4f12bc6/src/main.ts#L48">main.ts:48</a></li>
+									<li>Defined in <a href="https://github.com/iadvize/dataway/blob/fc15c11/src/main.ts#L95">main.ts:95</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
-									<h4>L</h4>
+									<h4>E</h4>
 								</li>
 								<li>
 									<h4>A</h4>
@@ -532,7 +681,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>monadA: <a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">L</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>monadA: <a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -543,19 +692,19 @@
 					<a name="issuccess" class="tsd-anchor"></a>
 					<h3>is<wbr>Success</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">is<wbr>Success&lt;L, A&gt;<span class="tsd-signature-symbol">(</span>monadA<span class="tsd-signature-symbol">: </span><a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">L</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Success&lt;E, A&gt;<span class="tsd-signature-symbol">(</span>monadA<span class="tsd-signature-symbol">: </span><a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/iadvize/dataway/blob/4f12bc6/src/main.ts#L57">main.ts:57</a></li>
+									<li>Defined in <a href="https://github.com/iadvize/dataway/blob/fc15c11/src/main.ts#L104">main.ts:104</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
-									<h4>L</h4>
+									<h4>E</h4>
 								</li>
 								<li>
 									<h4>A</h4>
@@ -564,7 +713,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>monadA: <a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">L</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>monadA: <a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -575,19 +724,34 @@
 					<a name="map2" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> map2</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">map2&lt;L, A, B, C&gt;<span class="tsd-signature-symbol">(</span>f<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, functorA<span class="tsd-signature-symbol">: </span><a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">L</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span>, functorB<span class="tsd-signature-symbol">: </span><a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">L</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">B</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">L</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">map2&lt;E, A, B, C&gt;<span class="tsd-signature-symbol">(</span>f<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, functorA<span class="tsd-signature-symbol">: </span><a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span>, functorB<span class="tsd-signature-symbol">: </span><a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">B</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/iadvize/dataway/blob/4f12bc6/src/main.ts#L82">main.ts:82</a></li>
+									<li>Defined in <a href="https://github.com/iadvize/dataway/blob/fc15c11/src/main.ts#L217">main.ts:217</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>apply the function <code>f</code> if both arguments are <code>Success</code></p>
+								</div>
+								<p>if not, the leftmost argument with the highest priority as defined bellow will be returned</p>
+								<p><code>Failure</code> being the highest priority, <code>Loading</code> being the lowest</p>
+								<p><code>Failure -&gt; NotAsked -&gt; Loading</code></p>
+								<pre><code>import { map2, failure, success } <span class="hljs-keyword">from</span>  <span class="hljs-string">'dataway'</span>;
+
+const <span class="hljs-keyword">add</span><span class="bash"> = val1 =&gt; val2 =&gt; val1 + val2;</span>
+
+map2(<span class="hljs-keyword">add</span><span class="bash">, success(3), success(5)) === success(8);</span>
+map2(<span class="hljs-keyword">add</span><span class="bash">, failure(<span class="hljs-string">'a'</span>), success(5)) === failure(<span class="hljs-string">'a'</span>);</span>
+map2(<span class="hljs-keyword">add</span><span class="bash">, failure(<span class="hljs-string">'a'</span>), failure(<span class="hljs-string">'b'</span>)) === failure(<span class="hljs-string">'a'</span>);</span></code></pre>
+							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
-									<h4>L</h4>
+									<h4>E</h4>
 								</li>
 								<li>
 									<h4>A</h4>
@@ -641,13 +805,17 @@
 									</ul>
 								</li>
 								<li>
-									<h5>functorA: <a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">L</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>functorA: <a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 								<li>
-									<h5>functorB: <a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">L</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">B</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>functorB: <a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">B</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+										</div>
+									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">L</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -655,19 +823,34 @@
 					<a name="map3" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> map3</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">map3&lt;L, A, B, C, D&gt;<span class="tsd-signature-symbol">(</span>f<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, functorA<span class="tsd-signature-symbol">: </span><a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">L</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span>, functorB<span class="tsd-signature-symbol">: </span><a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">L</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">B</span><span class="tsd-signature-symbol">&gt;</span>, functorC<span class="tsd-signature-symbol">: </span><a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">L</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">L</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">D</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">map3&lt;E, A, B, C, D&gt;<span class="tsd-signature-symbol">(</span>f<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, functorA<span class="tsd-signature-symbol">: </span><a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span>, functorB<span class="tsd-signature-symbol">: </span><a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">B</span><span class="tsd-signature-symbol">&gt;</span>, functorC<span class="tsd-signature-symbol">: </span><a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">D</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/iadvize/dataway/blob/4f12bc6/src/main.ts#L88">main.ts:88</a></li>
+									<li>Defined in <a href="https://github.com/iadvize/dataway/blob/fc15c11/src/main.ts#L247">main.ts:247</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>apply the function <code>f</code> if all arguments are <code>Success</code></p>
+								</div>
+								<p>if not, the leftmost argument with the highest priority as defined bellow will be returned</p>
+								<p><code>Failure</code> being the highest priority, <code>Loading</code> being the lowest</p>
+								<p><code>Failure -&gt; NotAsked -&gt; Loading</code></p>
+								<pre><code><span class="hljs-keyword">import</span> { map3, failure, success } <span class="hljs-keyword">from</span>  <span class="hljs-string">'dataway'</span>;
+
+<span class="hljs-keyword">const</span> cubic = <span class="hljs-function"><span class="hljs-params">val1</span> =&gt;</span> <span class="hljs-function"><span class="hljs-params">val2</span> =&gt;</span> <span class="hljs-function"><span class="hljs-params">val3</span> =&gt;</span> val1 * val2 * val3;
+
+map3(cubic, success(<span class="hljs-number">3</span>), success(<span class="hljs-number">5</span>), success(<span class="hljs-number">2</span>)) === success(<span class="hljs-number">16</span>);
+map3(cubic, failure(<span class="hljs-string">'a'</span>), success(<span class="hljs-number">5</span>), loading) === failure(<span class="hljs-string">'a'</span>);
+map3(cubic, success(<span class="hljs-number">3</span>), loading, notAsked) === notAsked;</code></pre>
+							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
-									<h4>L</h4>
+									<h4>E</h4>
 								</li>
 								<li>
 									<h4>A</h4>
@@ -742,16 +925,20 @@
 									</ul>
 								</li>
 								<li>
-									<h5>functorA: <a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">L</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>functorA: <a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 								<li>
-									<h5>functorB: <a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">L</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">B</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>functorB: <a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">B</span><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 								<li>
-									<h5>functorC: <a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">L</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>functorC: <a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+										</div>
+									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">L</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">D</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_main_.html#dataway" class="tsd-signature-type">Dataway</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">D</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -765,7 +952,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/iadvize/dataway/blob/4f12bc6/src/main.ts#L44">main.ts:44</a></li>
+									<li>Defined in <a href="https://github.com/iadvize/dataway/blob/fc15c11/src/main.ts#L91">main.ts:91</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -796,26 +983,16 @@
 					<div class="tsd-signature tsd-kind-icon">dataway<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/iadvize/dataway/blob/4f12bc6/src/main.ts#L128">main.ts:128</a></li>
+							<li>Defined in <a href="https://github.com/iadvize/dataway/blob/fc15c11/src/main.ts#L341">main.ts:341</a></li>
 						</ul>
 					</aside>
-					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-						<a name="dataway-1.uri-2" class="tsd-anchor"></a>
-						<h3>URI</h3>
-						<div class="tsd-signature tsd-kind-icon">URI<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"Dataway"</span></div>
-						<aside class="tsd-sources">
-							<ul>
-								<li>Defined in <a href="https://github.com/iadvize/dataway/blob/4f12bc6/src/main.ts#L129">main.ts:129</a></li>
-							</ul>
-						</aside>
-					</section>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 						<a name="dataway-1.of" class="tsd-anchor"></a>
 						<h3>of</h3>
 						<div class="tsd-signature tsd-kind-icon">of<span class="tsd-signature-symbol">:</span> <a href="_main_.html#success-1" class="tsd-signature-type">success</a><span class="tsd-signature-symbol"> =&nbsp;success</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/iadvize/dataway/blob/4f12bc6/src/main.ts#L130">main.ts:130</a></li>
+								<li>Defined in <a href="https://github.com/iadvize/dataway/blob/fc15c11/src/main.ts#L346">main.ts:346</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -829,7 +1006,7 @@
 							<li class="tsd-description">
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in <a href="https://github.com/iadvize/dataway/blob/4f12bc6/src/main.ts#L147">main.ts:147</a></li>
+										<li>Defined in <a href="https://github.com/iadvize/dataway/blob/fc15c11/src/main.ts#L363">main.ts:363</a></li>
 									</ul>
 								</aside>
 								<div class="tsd-comment tsd-typography">
@@ -913,7 +1090,7 @@
 							<li class="tsd-description">
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in <a href="https://github.com/iadvize/dataway/blob/4f12bc6/src/main.ts#L226">main.ts:226</a></li>
+										<li>Defined in <a href="https://github.com/iadvize/dataway/blob/fc15c11/src/main.ts#L442">main.ts:442</a></li>
 									</ul>
 								</aside>
 								<div class="tsd-comment tsd-typography">
@@ -1023,7 +1200,7 @@ validate(loading)
 							<li class="tsd-description">
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in <a href="https://github.com/iadvize/dataway/blob/4f12bc6/src/main.ts#L182">main.ts:182</a></li>
+										<li>Defined in <a href="https://github.com/iadvize/dataway/blob/fc15c11/src/main.ts#L398">main.ts:398</a></li>
 									</ul>
 								</aside>
 								<div class="tsd-comment tsd-typography">
@@ -1106,7 +1283,7 @@ validate(loading)
 					<div class="tsd-signature tsd-kind-icon">loading<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/iadvize/dataway/blob/4f12bc6/src/main.ts#L38">main.ts:38</a></li>
+							<li>Defined in <a href="https://github.com/iadvize/dataway/blob/fc15c11/src/main.ts#L85">main.ts:85</a></li>
 						</ul>
 					</aside>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -1115,7 +1292,7 @@ validate(loading)
 						<div class="tsd-signature tsd-kind-icon">_tag<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"Loading"</span><span class="tsd-signature-symbol"> =&nbsp;&quot;Loading&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/iadvize/dataway/blob/4f12bc6/src/main.ts#L38">main.ts:38</a></li>
+								<li>Defined in <a href="https://github.com/iadvize/dataway/blob/fc15c11/src/main.ts#L85">main.ts:85</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -1126,7 +1303,7 @@ validate(loading)
 					<div class="tsd-signature tsd-kind-icon">not<wbr>Asked<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/iadvize/dataway/blob/4f12bc6/src/main.ts#L36">main.ts:36</a></li>
+							<li>Defined in <a href="https://github.com/iadvize/dataway/blob/fc15c11/src/main.ts#L83">main.ts:83</a></li>
 						</ul>
 					</aside>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -1135,7 +1312,7 @@ validate(loading)
 						<div class="tsd-signature tsd-kind-icon">_tag<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"NotAsked"</span><span class="tsd-signature-symbol"> =&nbsp;&quot;NotAsked&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/iadvize/dataway/blob/4f12bc6/src/main.ts#L36">main.ts:36</a></li>
+								<li>Defined in <a href="https://github.com/iadvize/dataway/blob/fc15c11/src/main.ts#L83">main.ts:83</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -1169,12 +1346,6 @@ validate(loading)
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-has-type-parameter">
 						<a href="_main_.html#dataway" class="tsd-kind-icon">Dataway</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
-						<a href="_main_.html#uri" class="tsd-kind-icon">URI</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
-						<a href="_main_.html#uri-1" class="tsd-kind-icon">URI</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
 						<a href="_main_.html#append" class="tsd-kind-icon">append</a>
