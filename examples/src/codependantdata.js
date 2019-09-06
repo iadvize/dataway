@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { notAsked, loading, failure, success, map2 } from "dataway";
+import React, { useState, useEffect } from 'react';
+import { notAsked, loading, failure, success, fold, map2 } from 'dataway';
 
 const display = data => (
   <table>
@@ -24,55 +24,55 @@ const display = data => (
 
 const mergePostUsers = posts => users => {
   return posts.map(post => {
-    return { ...post, ...users.find(user => user.id === post.userId) };
+    return { ...users.find(user => user.id === post.userId), ...post };
   });
 };
 
 const CodependantData = () => {
-  const [posts, setPosts] = useState(notAsked());
-  const [users, setUsers] = useState(notAsked());
+  const [posts, setPosts] = useState(notAsked);
+  const [users, setUsers] = useState(notAsked);
   useEffect(() => {
-    setPosts(loading());
-    setUsers(loading());
+    setPosts(loading);
+    setUsers(loading);
     setTimeout(
       () =>
-        fetch("https://jsonplaceholder.typicode.com/posts")
+        fetch('https://jsonplaceholder.typicode.com/posts')
           .then(response => {
             if (response.ok) {
               return response.json();
             } else {
               return Promise.reject(
-                `Request rejected with status ${response.status}`
+                `Request rejected with status ${response.status}`,
               );
             }
           })
           .then(json => setPosts(success(json)))
           .catch(error => setPosts(failure(error))),
-      1000
+      1000,
     );
     setTimeout(
       () =>
-        fetch("https://jsonplaceholder.typicode.com/users")
+        fetch('https://jsonplaceholder.typicode.com/users')
           .then(response => {
             if (response.ok) {
               return response.json();
             } else {
               return Promise.reject(
-                `Request rejected with status ${response.status}`
+                `Request rejected with status ${response.status}`,
               );
             }
           })
           .then(json => setUsers(success(json)))
           .catch(error => setUsers(failure(error))),
-      2000
+      2000,
     );
   }, []);
-  return map2(mergePostUsers, posts, users).fold(
-    <span>Not loaded</span>,
-    <span>Loading</span>,
+  return fold(
+    () => <span>Not loaded</span>,
+    () => <span>Loading</span>,
     error => <span>{error}</span>,
-    display
-  );
+    display,
+  )(map2(mergePostUsers)(posts, users));
 };
 
 export default CodependantData;

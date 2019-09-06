@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { notAsked, loading, failure, success } from "dataway";
+import { notAsked, loading, failure, success, fold } from "dataway";
 
 const display = data => (
   <table>
@@ -23,9 +23,9 @@ const display = data => (
 );
 
 const Basic = () => {
-  const [data, setData] = useState(notAsked());
+  const [data, setData] = useState(notAsked);
   useEffect(() => {
-    setData(loading());
+    setData(loading);
     setTimeout(
       () =>
         fetch("https://jsonplaceholder.typicode.com/posts")
@@ -43,12 +43,12 @@ const Basic = () => {
       2000
     );
   }, []);
-  return data.fold(
-    <span>Not loaded</span>,
-    <span>Loading</span>,
+  return fold(
+    () => <span>Not loaded</span>,
+    () => <span>Loading</span>,
     error => <span>{error}</span>,
-    display
-  );
+    display,
+  )(data);
 };
 
 export default Basic;
