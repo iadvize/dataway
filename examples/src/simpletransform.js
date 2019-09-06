@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { notAsked, loading, failure, success } from "dataway";
+import { notAsked, loading, failure, success, fold, map } from "dataway";
 
 const display = data => <span>{data}</span>;
 
 const SimpleTransform = () => {
-  const [data, setData] = useState(notAsked());
+  const [data, setData] = useState(notAsked);
   useEffect(() => {
-    setData(loading());
+    setData(loading);
     setTimeout(
       () =>
         fetch("https://jsonplaceholder.typicode.com/posts")
@@ -24,14 +24,13 @@ const SimpleTransform = () => {
       2000
     );
   }, []);
-  return data
-    .map(val => val.length)
-    .fold(
-      <span>Not loaded</span>,
-      <span>Loading</span>,
-      error => <span>{error}</span>,
-      display
-    );
+  return fold(
+    () => <span>Not loaded</span>,
+    () => <span>Loading</span>,
+    error => <span>{error}</span>,
+    display,
+    map(val => val.length)(data)
+  );
 };
 
 export default SimpleTransform;

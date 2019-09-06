@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { notAsked, loading, failure, success, map2 } from "dataway";
+import { notAsked, loading, failure, success, fold, map2 } from "dataway";
 
 const display = data => (
   <table>
@@ -24,16 +24,16 @@ const display = data => (
 
 const mergePostUsers = posts => users => {
   return posts.map(post => {
-    return { ...post, ...users.find(user => user.id === post.userId) };
+    return { ...users.find(user => user.id === post.userId), ...post };
   });
 };
 
 const CodependantData = () => {
-  const [posts, setPosts] = useState(notAsked());
-  const [users, setUsers] = useState(notAsked());
+  const [posts, setPosts] = useState(notAsked);
+  const [users, setUsers] = useState(notAsked);
   useEffect(() => {
-    setPosts(loading());
-    setUsers(loading());
+    setPosts(loading);
+    setUsers(loading);
     setTimeout(
       () =>
         fetch("https://jsonplaceholder.typicode.com/posts")
@@ -67,11 +67,12 @@ const CodependantData = () => {
       2000
     );
   }, []);
-  return map2(mergePostUsers, posts, users).fold(
-    <span>Not loaded</span>,
-    <span>Loading</span>,
+  return fold(
+    () => <span>Not loaded</span>,
+    () => <span>Loading</span>,
     error => <span>{error}</span>,
-    display
+    display,
+    map2(mergePostUsers, posts, users)
   );
 };
 

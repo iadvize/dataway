@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { notAsked, loading, failure, success } from "dataway";
+import { notAsked, loading, failure, success, fold, map } from "dataway";
 
 const displayPost = clickHandle => post => {
   return (
@@ -26,11 +26,12 @@ const display = clickHandle => data => {
       </thead>
       <tbody>
         {Object.entries(data).map(([_, post]) =>
-          post.fold(
-            <tr>'not asked'</tr>,
-            <tr>'loading'</tr>,
+          fold(
+            () => <tr>'not asked'</tr>,
+            () => <tr>'loading'</tr>,
             error => <tr>{error}</tr>,
-            displayPost(clickHandle)
+            displayPost(clickHandle),
+            post
           )
         )}
       </tbody>
@@ -39,10 +40,10 @@ const display = clickHandle => data => {
 };
 
 const NestedData = () => {
-  const [posts, setPosts] = useState(notAsked());
+  const [posts, setPosts] = useState(notAsked);
   const [load, setload] = useState(undefined);
   useEffect(() => {
-    setPosts(loading());
+    setPosts(loading);
     setTimeout(
       () =>
         fetch("https://jsonplaceholder.typicode.com/posts")
@@ -72,7 +73,7 @@ const NestedData = () => {
   useEffect(() => {
     if (load) {
       setload(undefined);
-      setPosts(posts.map(data => ({ ...data, ...{ [load]: loading() } })));
+      setPosts(map(data => ({ ...data, ...{ [load]: loading } }))(posts));
       setTimeout(
         () =>
           fetch(`https://jsonplaceholder.typicode.com/posts/${load}`)
@@ -87,23 +88,24 @@ const NestedData = () => {
             })
             .then(json => {
               setPosts(
-                posts.map(data => ({ ...data, ...{ [load]: success(json) } }))
+                map(data => ({ ...data, ...{ [load]: success(json) } }))(posts)
               );
             })
             .catch(error =>
               setPosts(
-                posts.map(data => ({ ...data, ...{ [load]: failure(error) } }))
+                map(data => ({ ...data, ...{ [load]: failure(error) } }))(posts)
               )
             ),
         1000
       );
     }
   }, [posts, load]);
-  return posts.fold(
-    <span>Not loaded</span>,
-    <span>Loading</span>,
+  return fold(
+    () =><span>Not loaded</span>,
+    () => <span>Loading</span>,
     error => <span>{error}</span>,
-    display(setload)
+    display(setload),
+    posts
   );
 };
 
