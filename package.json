@@ -13,7 +13,7 @@
     "pretest": "npm run build",
     "prettier-check": "prettier --check '{src,test}/**/*.ts'",
     "prettier-fix": "prettier --write '{src,test}/**/*.ts'",
-    "generate-doc": "typedoc --name Dataway"
+    "generate-doc": "typedoc --name Dataway && touch docs/.nojekyll"
   },
   "files": [
     "dist"
