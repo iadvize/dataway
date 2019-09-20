@@ -154,10 +154,10 @@ describe('Dataway', () => {
     const onError = (error: string): string => error;
     const onSuccess = (value: string): string => value.length.toString();
     expect(
-      fold(notaskedvalue, loadingvalue, onError, onSuccess, notAsked),
+      fold(notaskedvalue, loadingvalue, onError, onSuccess)(notAsked),
     ).toEqual('notAsked');
     expect(
-      fold(notaskedvalue, loadingvalue, onError, onSuccess, loading),
+      fold(notaskedvalue, loadingvalue, onError, onSuccess)(loading),
     ).toEqual('loading');
     expect(
       fold(
@@ -165,11 +165,12 @@ describe('Dataway', () => {
         loadingvalue,
         onError,
         onSuccess,
+      )(
         failure('error loading resource'),
       ),
     ).toEqual('error loading resource');
     expect(
-      fold(notaskedvalue, loadingvalue, onError, onSuccess, success('axel')),
+      fold(notaskedvalue, loadingvalue, onError, onSuccess)(success('axel')),
     ).toEqual('4');
   });
 
@@ -184,8 +185,7 @@ describe('Dataway', () => {
         () => 'loading',
         error => error,
         value => value,
-        data,
-      );
+      )(data);
 
       expect(isFailure(data)).toEqual(true);
       expect(content).toEqual(myError);
@@ -201,8 +201,7 @@ describe('Dataway', () => {
         () => 'loading',
         error => error,
         value => value,
-        data,
-      );
+      )(data);
 
       expect(isSuccess(data)).toEqual(true);
       expect(content).toEqual(myValue);
