@@ -10,7 +10,7 @@ npm install dataway
 yarn add dataway
 ```
 
-[API documentation](https://iadvize.github.io/dataway/docs)
+[API documentation](https://iadvize.github.io/dataway/)
 
 ## Introduction
 
