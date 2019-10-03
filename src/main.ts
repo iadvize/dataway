@@ -215,10 +215,11 @@ export const fromOption = <E>(defaultFailure: E) => <A>(option: Option<A>) => {
  * @param functorB
  */
 export const map2 = <E, A, B, C>(
-  f: (a: A) => (b: B) => C,
+  f: (a: A) => (b: B) => C
+) => (
   functorA: Dataway<E, A>,
   functorB: Dataway<E, B>,
-): Dataway<E, C> => dataway.ap(dataway.map(functorA, f), functorB);
+  ): Dataway<E, C> => dataway.ap(dataway.map(functorA, f), functorB);
 
 /**
  * apply the function `f` if all arguments are `Success`
@@ -245,12 +246,13 @@ export const map2 = <E, A, B, C>(
  * @param functorC
  */
 export const map3 = <E, A, B, C, D>(
-  f: (a: A) => (b: B) => (c: C) => D,
+  f: (a: A) => (b: B) => (c: C) => D
+) => (
   functorA: Dataway<E, A>,
   functorB: Dataway<E, B>,
   functorC: Dataway<E, C>,
-): Dataway<E, D> =>
-  dataway.ap(dataway.ap(dataway.map(functorA, f), functorB), functorC);
+  ): Dataway<E, D> =>
+    dataway.ap(dataway.ap(dataway.map(functorA, f), functorB), functorC);
 
 /**
  * if both argument are `Success` return a tuple containing both values wrapped in a `Success`
