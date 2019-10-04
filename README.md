@@ -41,9 +41,8 @@ const view = state => {
     () => "<p>Click on the load button</p>",
     () => "<p>Loading</p>",
     error => `<p>something wrong did happen : ${error}</p>`,
-    success => `<ul>${success.map(post => `<li>${post.title}</li>`)}</ul>`,
-    state
-  );
+    success => `<ul>${success.map(post => `<li>${post.title}</li>`)}</ul>`
+  )(state);
 };
 
 const setState = stateManager(view, notAsked);
@@ -131,9 +130,9 @@ const render = dataway => fold(
   () => "<p>Click on the load button</p>",
   () => "<p>Loading</p>",
   error => `<p>something wrong did happen : ${error}</p>`,
-  success => `<p>${success}</p>`,
-  dataway
-);
+  success => `<p>${success}</p>`
+)(dataway);
+
 render(success('Mr Wilson'));
 // => <p>Mr Wilson</p>
 render(failure('Ooops failed to fetch Mr Wilson data'));
