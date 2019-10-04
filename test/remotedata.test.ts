@@ -74,12 +74,12 @@ describe('Dataway', () => {
     describe('map2', () => {
       const f = (s1: string) => (s2: string) => `${s1}${s2}`;
       it('return success if both Dataway are success', () => {
-        expect(map2(f, success('abc'), success('def'))).toEqual(
+        expect(map2(f)(success('abc'), success('def'))).toEqual(
           success('abcdef'),
         );
       });
       it('return failure if one Dataway is a failure', () => {
-        expect(map2(f, success('abc'), failure('xyz'))).toEqual(failure('xyz'));
+        expect(map2(f)(success('abc'), failure('xyz'))).toEqual(failure('xyz'));
       });
     });
 
@@ -87,12 +87,12 @@ describe('Dataway', () => {
       const f = (s1: string) => (s2: string) => (s3: string) =>
         `${s1}${s2}${s3}`;
       it('return success if all Dataway are success', () => {
-        expect(map3(f, success('abc'), success('def'), success('ghi'))).toEqual(
+        expect(map3(f)(success('abc'), success('def'), success('ghi'))).toEqual(
           success('abcdefghi'),
         );
       });
       it('return failure if one Dataway is a failure', () => {
-        expect(map3(f, success('abc'), failure('xyz'), success('ghi'))).toEqual(
+        expect(map3(f)(success('abc'), failure('xyz'), success('ghi'))).toEqual(
           failure('xyz'),
         );
       });

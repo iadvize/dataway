@@ -205,9 +205,9 @@ export const fromOption = <E>(defaultFailure: E) => <A>(option: Option<A>) => {
  *
  * const add = val1 => val2 => val1 + val2;
  *
- * map2(add, success(3), success(5)) === success(8);
- * map2(add, failure('a'), success(5)) === failure('a');
- * map2(add, failure('a'), failure('b')) === failure('a');
+ * map2(add)(success(3), success(5)) === success(8);
+ * map2(add)(failure('a'), success(5)) === failure('a');
+ * map2(add)(failure('a'), failure('b')) === failure('a');
  * ```
  *
  * @param f
@@ -235,9 +235,9 @@ export const map2 = <E, A, B, C>(
  *
  * const cubic = val1 => val2 => val3 => val1 * val2 * val3;
  *
- * map3(cubic, success(3), success(5), success(2)) === success(16);
- * map3(cubic, failure('a'), success(5), loading) === failure('a');
- * map3(cubic, success(3), loading, notAsked) === notAsked;
+ * map3(cubic)(success(3), success(5), success(2)) === success(16);
+ * map3(cubic)(failure('a'), success(5), loading) === failure('a');
+ * map3(cubic)(success(3), loading, notAsked) === notAsked;
  * ```
  *
  * @param f
