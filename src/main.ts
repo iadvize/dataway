@@ -304,7 +304,8 @@ export const append = <E, A, B>(
  *   () => "<span>Search initiated, awesome code snippets incomings !</span>",
  *   error => `<span>ho no ! ${error} did happen, please retry</span>`,
  *   results => `<ul>${results.map(result => `<li>${result}</li>`)}</ul>`,
- * )(searchResult);
+ *   searchResult
+ * );
  * ```
  * @typeparam E the error type you expect
  * @typeparam A the success type you expect
@@ -313,13 +314,15 @@ export const append = <E, A, B>(
  * @param onLoading
  * @param onFailure
  * @param onSuccess
+ * @param monadA
  */
 export const fold = <E, A, B>(
   onNotAsked: () => B,
   onLoading: () => B,
   onFailure: (failure: E) => B,
   onSuccess: (success: A) => B,
-) => (monadA: Dataway<E, A>): B => {
+  monadA: Dataway<E, A>,
+): B => {
   switch (monadA._tag) {
     case 'NotAsked':
       return onNotAsked();
