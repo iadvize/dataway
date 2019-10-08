@@ -1,4 +1,5 @@
 import { left, right } from 'fp-ts/lib/Either';
+import { eqString, eqNumber } from 'fp-ts/lib/Eq';
 
 import {
   Dataway,
@@ -16,6 +17,7 @@ import {
   fromNullable,
   isFailure,
   isSuccess,
+  getEq,
 } from '../src/main';
 
 describe('Dataway', () => {
@@ -221,6 +223,48 @@ describe('Dataway', () => {
       expect(fromNullable('test')).toEqual(success('test'));
       expect(fromNullable([])).toEqual(success([]));
       expect(fromNullable({})).toEqual(success({}));
+    });
+  });
+
+  describe('getEq', () => {
+    const E = getEq(eqNumber, eqString);
+    it('returns true if same ref', () => {
+      const d1 = notAsked;
+      const d2 = d1;
+
+      expect(E.equals(d1, d2)).toEqual(true);
+    });
+
+    it('returns true if 2 notAsked', () => {
+      expect(E.equals(notAsked, notAsked)).toEqual(true);
+    });
+
+    it('returns true if 2 loading', () => {
+      expect(E.equals(loading, loading)).toEqual(true);
+    });
+
+    it('returns true if same failure value', () => {
+      expect(E.equals(failure(1), failure(1)))
+        .toEqual(true);
+    });
+
+    it('returns false if different failure value', () => {
+      expect(E.equals(failure(1), failure(2)))
+        .toEqual(false);
+    });
+
+    it('returns true if same success value', () => {
+      const d1 = success('hello');
+      const d2 = success('hello');
+
+      expect(E.equals(d1, d2)).toEqual(true);
+    });
+
+    it('returns false if different success value', () => {
+      const d1 = success('hello');
+      const d2 = success('world');
+
+      expect(E.equals(d1, d2)).toEqual(false);
     });
   });
 });
