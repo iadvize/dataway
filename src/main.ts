@@ -6,6 +6,7 @@ import { Either, isLeft } from 'fp-ts/lib/Either';
 import { Option, isNone } from 'fp-ts/lib/Option';
 import { Monad2 } from 'fp-ts/lib/Monad';
 import { pipeable } from 'fp-ts/lib/pipeable';
+import { Eq } from 'fp-ts/lib/Eq';
 
 declare module 'fp-ts/lib/HKT' {
   interface URItoKind2<E, A> {
@@ -338,6 +339,45 @@ export const fold = <E, A, B>(
   }
 };
 
+/**
+ * Compare two dataway
+ *
+ * ```
+ * import { getEq } from "dataway";
+ *
+ * const E = getEq(eqNumber, eqString);
+ *
+ * E.equals(notAsked, notAsked) // true
+ * E.equals(loading, loading) // true
+ * E.equals(failure(1), failure(2)) // false
+ * E.equals(failure(1), failure(1)) // true
+ * E.equals(success('hello'), success('olleh')) // false
+ * E.equals(success('hello'), success('hello')) // true
+ *
+ * ```
+ *
+ * @param EE Eq instance to compare failure values
+ * @param EA Eq instance to compare success values
+ */
+export const getEq = <E, A>(EE: Eq<E>, EA: Eq<A>): Eq<Dataway<E, A>> => {
+  return {
+    equals: (x, y) => {
+      if (x === y) {
+        return true;
+      }
+
+      if (isFailure(x) && isFailure(y)) {
+        return EE.equals(x.failure, y.failure);
+      }
+
+      if (isSuccess(x) && isSuccess(y)) {
+        return EA.equals(x.success, y.success);
+      }
+
+      return false;
+    }
+  }
+}
 export const dataway: Monad2<URI> = {
   /**
    * @ignore
@@ -400,13 +440,13 @@ export const dataway: Monad2<URI> = {
   /**
    * Allow to turn function `a -> Dataway b` into a `Dataway a -> Dataway b`
    * Where `Dataway b` can use a different constructor than `Dataway a`
-   * 
+   *
    * | f(a -> Dataway b)  | Monad(a)   | Result      |
    * | ------------------ | ------------ | ----------------- |
    * | f(a -> Success b)  | success(a)   | success(b)        |
    * | f(a -> Failure b)  | success(a)   | failure(b)        |
    * | f(a -> Dataway b)  | success(a)   | Dataway b         |
-   * 
+   *
    * this allow us to chain function that can produce different variance of Dataway
    * ```
 import { dataway, success, failure, loading } from "dataway";
