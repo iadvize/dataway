@@ -160,4 +160,4 @@ You can check and play with several examples
 * [Aggregation example](https://codesandbox.io/embed/dataway-two-remote-source-yopzb?fontsize=14&module=%2Fsrc%2Findex.js)
 * [Validation Example](https://codesandbox.io/embed/dataway-validation-and-transformation-dhftw?fontsize=14&module=%2Fsrc%2Findex.js)
 
-[API docs](https://iadvize.github.io/dataway/docs)
+[API docs](https://iadvize.github.io/dataway/modules/_main_.html)
