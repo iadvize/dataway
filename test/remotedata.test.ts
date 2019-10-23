@@ -11,7 +11,6 @@ import {
   map,
   map2,
   map3,
-  append,
   fold,
   fromEither,
   fromNullable,
@@ -97,17 +96,6 @@ describe('Dataway', () => {
         expect(map3(f, success('abc'), failure('xyz'), success('ghi'))).toEqual(
           failure('xyz'),
         );
-      });
-    });
-
-    describe('append', () => {
-      it('return success if both Dataway are success', () => {
-        expect(append(success('abc'), success('def'))).toEqual(
-          success(['abc', 'def']),
-        );
-      });
-      it('return failure if one Dataway is a failure', () => {
-        expect(append(success('abc'), failure('xyz'))).toEqual(failure('xyz'));
       });
     });
   });
