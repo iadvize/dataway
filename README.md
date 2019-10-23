@@ -28,7 +28,7 @@ Dataway also provides a great api to manipulate, transform and aggregate Dataway
 
 Imagine that our application relies on a webservice that provides us with a list of elements, and that our job is to both store the number of elements in the application state for future usage and to display it.
 
-[Open in codesandbox.io](https://codesandbox.io/embed/dataway-basic-example-5eeh8?fontsize=14&module=%2Fsrc%2Findex.js)
+[Open in codesandbox.io](https://codesandbox.io/s/dataway-3xx-basic-example-izc7m?fontsize=14)
 ```typescript
 import { fold, notAsked, loading, failure, success } from "dataway";
 import stateManager from "./statemanager";
@@ -154,9 +154,9 @@ This is really great to easily create consistent UIs.
 `Dataway` also offers compatibility with great libraries such as [Ramda](https://ramdajs.com), and [fp-ts](https://gcanti.github.io/fp-ts/)
 
 You can check and play with several examples
-* [Basic example](https://codesandbox.io/embed/dataway-basic-example-5eeh8?fontsize=14&module=%2Fsrc%2Findex.js)
-* [Map example](https://codesandbox.io/embed/dataway-basic-transformation-zj1th?fontsize=14&module=%2Fsrc%2Findex.js)
-* [Aggregation example](https://codesandbox.io/embed/dataway-two-remote-source-yopzb?fontsize=14&module=%2Fsrc%2Findex.js)
-* [Validation Example](https://codesandbox.io/embed/dataway-validation-and-transformation-dhftw?fontsize=14&module=%2Fsrc%2Findex.js)
+* [Basic example](https://codesandbox.io/s/dataway-3xx-basic-example-izc7m?fontsize=14)
+* [Map example](https://codesandbox.io/s/dataway-3xx-basic-transformation-8388c?fontsize=14)
+* [Aggregation example](https://codesandbox.io/s/dataway-3xx-two-remote-source-b9hq5?fontsize=14)
+* [Validation Example](https://codesandbox.io/s/dataway-3xx-validation-and-transformation-ufo2h?fontsize=14)
 
 [API docs](https://iadvize.github.io/dataway/docs)
