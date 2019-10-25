@@ -144,22 +144,18 @@ describe('Dataway', () => {
     const onError = (error: string): string => error;
     const onSuccess = (value: string): string => value.length.toString();
     expect(
-      fold(notaskedvalue, loadingvalue, onError, onSuccess, notAsked),
+      fold(notaskedvalue, loadingvalue, onError, onSuccess)(notAsked),
     ).toEqual('notAsked');
     expect(
-      fold(notaskedvalue, loadingvalue, onError, onSuccess, loading),
+      fold(notaskedvalue, loadingvalue, onError, onSuccess)(loading),
     ).toEqual('loading');
     expect(
-      fold(
-        notaskedvalue,
-        loadingvalue,
-        onError,
-        onSuccess,
+      fold(notaskedvalue, loadingvalue, onError, onSuccess)(
         failure('error loading resource'),
       ),
     ).toEqual('error loading resource');
     expect(
-      fold(notaskedvalue, loadingvalue, onError, onSuccess, success('axel')),
+      fold(notaskedvalue, loadingvalue, onError, onSuccess)(success('axel')),
     ).toEqual('4');
   });
 
@@ -174,8 +170,7 @@ describe('Dataway', () => {
         () => 'loading',
         error => error,
         value => value,
-        data,
-      );
+      )(data);
 
       expect(isFailure(data)).toEqual(true);
       expect(content).toEqual(myError);
@@ -191,8 +186,7 @@ describe('Dataway', () => {
         () => 'loading',
         error => error,
         value => value,
-        data,
-      );
+      )(data);
 
       expect(isSuccess(data)).toEqual(true);
       expect(content).toEqual(myValue);
@@ -232,13 +226,11 @@ describe('Dataway', () => {
     });
 
     it('returns true if same failure value', () => {
-      expect(E.equals(failure(1), failure(1)))
-        .toEqual(true);
+      expect(E.equals(failure(1), failure(1))).toEqual(true);
     });
 
     it('returns false if different failure value', () => {
-      expect(E.equals(failure(1), failure(2)))
-        .toEqual(false);
+      expect(E.equals(failure(1), failure(2))).toEqual(false);
     });
 
     it('returns true if same success value', () => {
