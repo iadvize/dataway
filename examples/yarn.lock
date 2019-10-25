@@ -3033,10 +3033,10 @@ data-urls@^1.0.0, data-urls@^1.1.0:
     whatwg-mimetype "^2.2.0"
     whatwg-url "^7.0.0"
 
-dataway@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/dataway/-/dataway-2.0.0.tgz#746d0fde67b5d0e7e320c8ee0171221af4c07a11"
-  integrity sha512-D5tyUNakW4oNX0mvd/wfdtmDa5Hzs/pI7n8A+SFlxQYpxzEEaT3FfzTS7V+rrlkN6PgDy12hx2IvL6NMovNyxA==
+dataway@^3.0.0-beta.1:
+  version "3.0.0-beta.1"
+  resolved "https://registry.yarnpkg.com/dataway/-/dataway-3.0.0-beta.1.tgz#ee5a3222468b89d34f82dae96cf9a8a1c539b1a5"
+  integrity sha512-QJSR/2F/Oud4R/ctuEQgmh/NsSbuTR/LJSRYokXq+4igPWV6cE1I5Krktvh8bAd9L8VWXQwGgHcaGgXfy88Ebg==
   dependencies:
     fp-ts "^2.0.5"
 

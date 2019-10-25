@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { notAsked, loading, failure, success, fold, map } from "dataway";
+import React, { useState, useEffect } from 'react';
+import { notAsked, loading, failure, success, fold, map } from 'dataway';
 
 const displayPost = clickHandle => post => {
   return (
@@ -31,8 +31,7 @@ const display = clickHandle => data => {
             () => <tr>'loading'</tr>,
             error => <tr>{error}</tr>,
             displayPost(clickHandle),
-            post
-          )
+          )(post),
         )}
       </tbody>
     </table>
@@ -46,13 +45,13 @@ const NestedData = () => {
     setPosts(loading);
     setTimeout(
       () =>
-        fetch("https://jsonplaceholder.typicode.com/posts")
+        fetch('https://jsonplaceholder.typicode.com/posts')
           .then(response => {
             if (response.ok) {
               return response.json();
             } else {
               return Promise.reject(
-                `Request rejected with status ${response.status}`
+                `Request rejected with status ${response.status}`,
               );
             }
           })
@@ -62,12 +61,12 @@ const NestedData = () => {
                 json.reduce(function(map, obj) {
                   map[obj.id] = success(obj);
                   return map;
-                }, {})
-              )
+                }, {}),
+              ),
             );
           })
           .catch(error => setPosts(failure(error))),
-      1000
+      1000,
     );
   }, []);
   useEffect(() => {
@@ -82,31 +81,32 @@ const NestedData = () => {
                 return response.json();
               } else {
                 return Promise.reject(
-                  `Request rejected with status ${response.status}`
+                  `Request rejected with status ${response.status}`,
                 );
               }
             })
             .then(json => {
               setPosts(
-                map(data => ({ ...data, ...{ [load]: success(json) } }))(posts)
+                map(data => ({ ...data, ...{ [load]: success(json) } }))(posts),
               );
             })
             .catch(error =>
               setPosts(
-                map(data => ({ ...data, ...{ [load]: failure(error) } }))(posts)
-              )
+                map(data => ({ ...data, ...{ [load]: failure(error) } }))(
+                  posts,
+                ),
+              ),
             ),
-        1000
+        1000,
       );
     }
   }, [posts, load]);
   return fold(
-    () =><span>Not loaded</span>,
+    () => <span>Not loaded</span>,
     () => <span>Loading</span>,
     error => <span>{error}</span>,
     display(setload),
-    posts
-  );
+  )(posts);
 };
 
 export default NestedData;

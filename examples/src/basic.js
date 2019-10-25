@@ -48,8 +48,7 @@ const Basic = () => {
     () => <span>Loading</span>,
     error => <span>{error}</span>,
     display,
-    data
-  );
+  )(data);
 };
 
 export default Basic;

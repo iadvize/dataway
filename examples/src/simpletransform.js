@@ -29,8 +29,7 @@ const SimpleTransform = () => {
     () => <span>Loading</span>,
     error => <span>{error}</span>,
     display,
-    map(val => val.length)(data)
-  );
+  )(map(val => val.length)(data));
 };
 
 export default SimpleTransform;

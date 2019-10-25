@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { notAsked, loading, failure, success, fold, map2 } from "dataway";
+import React, { useState, useEffect } from 'react';
+import { notAsked, loading, failure, success, fold, map2 } from 'dataway';
 
 const display = data => (
   <table>
@@ -36,35 +36,35 @@ const CodependantData = () => {
     setUsers(loading);
     setTimeout(
       () =>
-        fetch("https://jsonplaceholder.typicode.com/posts")
+        fetch('https://jsonplaceholder.typicode.com/posts')
           .then(response => {
             if (response.ok) {
               return response.json();
             } else {
               return Promise.reject(
-                `Request rejected with status ${response.status}`
+                `Request rejected with status ${response.status}`,
               );
             }
           })
           .then(json => setPosts(success(json)))
           .catch(error => setPosts(failure(error))),
-      1000
+      1000,
     );
     setTimeout(
       () =>
-        fetch("https://jsonplaceholder.typicode.com/users")
+        fetch('https://jsonplaceholder.typicode.com/users')
           .then(response => {
             if (response.ok) {
               return response.json();
             } else {
               return Promise.reject(
-                `Request rejected with status ${response.status}`
+                `Request rejected with status ${response.status}`,
               );
             }
           })
           .then(json => setUsers(success(json)))
           .catch(error => setUsers(failure(error))),
-      2000
+      2000,
     );
   }, []);
   return fold(
@@ -72,8 +72,7 @@ const CodependantData = () => {
     () => <span>Loading</span>,
     error => <span>{error}</span>,
     display,
-    map2(mergePostUsers, posts, users)
-  );
+  )(map2(mergePostUsers)(posts, users));
 };
 
 export default CodependantData;
