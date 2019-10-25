@@ -275,7 +275,7 @@ export const map3 = <E, A, B, C, D>(
  *   () => "<span>Search initiated, awesome code snippets incomings !</span>",
  *   error => `<span>ho no ! ${error} did happen, please retry</span>`,
  *   results => `<ul>${results.map(result => `<li>${result}</li>`)}</ul>`,
- *   searchResult
+ *   )(searchResult)
  * );
  * ```
  * @typeparam E the error type you expect
@@ -285,15 +285,13 @@ export const map3 = <E, A, B, C, D>(
  * @param onLoading
  * @param onFailure
  * @param onSuccess
- * @param monadA
  */
 export const fold = <E, A, B>(
   onNotAsked: () => B,
   onLoading: () => B,
   onFailure: (failure: E) => B,
   onSuccess: (success: A) => B,
-  monadA: Dataway<E, A>,
-): B => {
+) => (monadA: Dataway<E, A>): B => {
   switch (monadA._tag) {
     case 'NotAsked':
       return onNotAsked();
@@ -345,9 +343,9 @@ export const getEq = <E, A>(EE: Eq<E>, EA: Eq<A>): Eq<Dataway<E, A>> => {
       }
 
       return false;
-    }
-  }
-}
+    },
+  };
+};
 export const dataway: Monad2<URI> = {
   /**
    * @ignore
