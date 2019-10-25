@@ -5,6 +5,7 @@
 import { Either, isLeft } from 'fp-ts/lib/Either';
 import { Option, isNone } from 'fp-ts/lib/Option';
 import { Monad2 } from 'fp-ts/lib/Monad';
+import { Foldable2 } from 'fp-ts/lib/Foldable';
 import { pipeable } from 'fp-ts/lib/pipeable';
 import { Eq } from 'fp-ts/lib/Eq';
 
@@ -378,7 +379,7 @@ export const getEq = <E, A>(EE: Eq<E>, EA: Eq<A>): Eq<Dataway<E, A>> => {
     }
   }
 }
-export const dataway: Monad2<URI> = {
+export const dataway: Monad2<URI> & Foldable2<URI> = {
   /**
    * @ignore
    */
@@ -480,8 +481,11 @@ validate(loading)
    * ```
    */
   chain: (monadA, func) => (isSuccess(monadA) ? func(monadA.success) : monadA),
+  reduce: (functorA, accumulator, func) => (isSuccess(functorA) ? func(accumulator, functorA.success) : accumulator),
+  foldMap: M => (functorA, func) => (!isSuccess(functorA) ? M.empty : func(functorA.success)),
+  reduceRight: (functorA, accumulator, func) => (isSuccess(functorA) ? func(functorA.success, accumulator) : accumulator),
 };
 
-const { ap, map, chain } = pipeable(dataway);
+const { ap, map, chain, reduce, foldMap, reduceRight } = pipeable(dataway);
 
-export { ap, map, chain };
+export { ap, map, chain, reduce, foldMap, reduceRight };
