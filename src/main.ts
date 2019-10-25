@@ -254,36 +254,6 @@ export const map3 = <E, A, B, C, D>(
   dataway.ap(dataway.ap(dataway.map(functorA, f), functorB), functorC);
 
 /**
- * if both argument are `Success` return a tuple containing both values wrapped in a `Success`
- *
- * if not, the leftmost argument with the highest priority as defined bellow will be returned
- *
- * `Failure` being the highest priority, `Loading` being the lowest
- *
- * `Failure -> NotAsked -> Loading`
- *
- * ```
- * import { append, failure, success } from  'dataway';
- *
- * append(success('a'), success('b')) === success(['a', 'b']);
- * append(failure('a'), success('b')) === failure('a');
- * append(failure('a'), failure('b')) === failure('a');
- * ```
- *
- * @param functorA
- * @param functorB
- */
-export const append = <E, A, B>(
-  functorA: Dataway<E, A>,
-  functorB: Dataway<E, B>,
-): Dataway<E, [A, B]> => {
-  return dataway.ap(
-    dataway.map(functorA, (a: A) => (b: B): [A, B] => [a, b]),
-    functorB,
-  );
-};
-
-/**
  * Fold is the only way to attempt to safely extract the data,
  * because it force you to consider the four variations of the dataway state.
  * The following example demonstrate how useful this is when trying to render a
