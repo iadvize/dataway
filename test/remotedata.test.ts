@@ -17,6 +17,7 @@ import {
   isFailure,
   isSuccess,
   getEq,
+  map4,
 } from '../src/main';
 
 describe('Dataway', () => {
@@ -94,6 +95,21 @@ describe('Dataway', () => {
       });
       it('return failure if one Dataway is a failure', () => {
         expect(map3(f, success('abc'), failure('xyz'), success('ghi'))).toEqual(
+          failure('xyz'),
+        );
+      });
+    });
+
+    describe('map4', () => {
+      const f = (s1: string) => (s2: string) => (s3: string) => (s4: string) =>
+        `${s1}${s2}${s3}${s4}`;
+      it('return success if all Dataway are success', () => {
+        expect(map4(f, success('abc'), success('def'), success('ghi'), success('klo'))).toEqual(
+          success('abcdefghiklo'),
+        );
+      });
+      it('return failure if one Dataway is a failure', () => {
+        expect(map4(f, success('abc'), failure('xyz'), success('ghi'), success('klo'))).toEqual(
           failure('xyz'),
         );
       });

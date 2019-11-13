@@ -5,7 +5,7 @@
 import { Either, isLeft } from 'fp-ts/lib/Either';
 import { Option, isNone } from 'fp-ts/lib/Option';
 import { Monad2 } from 'fp-ts/lib/Monad';
-import { pipeable } from 'fp-ts/lib/pipeable';
+import { pipeable, pipe } from 'fp-ts/lib/pipeable';
 import { Eq } from 'fp-ts/lib/Eq';
 
 declare module 'fp-ts/lib/HKT' {
@@ -253,6 +253,44 @@ export const map3 = <E, A, B, C, D>(
 ): Dataway<E, D> =>
   dataway.ap(dataway.ap(dataway.map(functorA, f), functorB), functorC);
 
+/**
+ * apply the function `f` if all arguments are `Success`
+ *
+ * if not, the leftmost argument with the highest priority as defined bellow will be returned
+ *
+ * `Failure` being the highest priority, `Loading` being the lowest
+ *
+ * `Failure -> NotAsked -> Loading`
+ *
+ * ```
+ * import { map4, failure, success } from  'dataway';
+ *
+ * const powerFour = val1 => val2 => val3 => val4 => val1 * val2 * val3 * val4;
+ *
+ * map4(powerFour, success(3), success(5), success(2), success(4)) === success(64);
+ * map4(powerFour, failure('a'), success(5), loading, success(2)) === failure('a');
+ * map4(powerFour, success(3), success(5), loading, notAsked) === notAsked;
+ * ```
+ *
+ * @param f
+ * @param functorA
+ * @param functorB
+ * @param functorC
+ * @param functorD
+ */
+export const map4 = <F, A, B, C, D, E>(
+    f: (a: A) => (b: B) => (c: C) => (d: D) => E,
+    functorA: Dataway<F, A>,
+    functorB: Dataway<F, B>,
+    functorC: Dataway<F, C>,
+    functorD: Dataway<F, D>,
+  ): Dataway<F, E> => pipe(
+      functorA,
+      map(f),
+      ap(functorB),
+      ap(functorC),
+      ap(functorD),
+    );
 /**
  * Fold is the only way to attempt to safely extract the data,
  * because it force you to consider the four variations of the dataway state.
