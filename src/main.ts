@@ -450,6 +450,6 @@ validate(loading)
   chain: (monadA, func) => (isSuccess(monadA) ? func(monadA.success) : monadA),
 };
 
-const { ap, map, chain } = pipeable(dataway);
+const { ap, map, chain, flatten } = pipeable(dataway);
 
-export { ap, map, chain };
+export { ap, map, chain, flatten };

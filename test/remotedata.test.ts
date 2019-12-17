@@ -17,6 +17,7 @@ import {
   isFailure,
   isSuccess,
   getEq,
+  flatten,
 } from '../src/main';
 
 describe('Dataway', () => {
@@ -247,4 +248,42 @@ describe('Dataway', () => {
       expect(E.equals(d1, d2)).toEqual(false);
     });
   });
+
+  describe('flatten', () => {
+    it('should flatten a dataway contained within an other', () => {
+      const result = flatten(success(success('ok')));
+
+      expect(result).toEqual(success('ok'))
+    });
+
+    it('should flatten a failed dataway contained within an other', () => {
+      const result = flatten(success(failure('ko')));
+
+      expect(result).toEqual(failure('ko'))
+    });
+
+    it('should flatten a loading dataway contained within an other', () => {
+      const result = flatten(success(loading));
+
+      expect(result).toEqual(loading)
+    });
+
+    it('should flatten a notAsked dataway contained within an other', () => {
+      const result = flatten(success(notAsked));
+
+      expect(result).toEqual(notAsked)
+    });
+
+    it('should not flatten a failed dataway containing within a successful one', () => {
+      const result = flatten(failure(success('ok')));
+
+      expect(result).toEqual(failure(success('ok')))
+    });
+
+    it('should not flatten a failed dataway contained within an other failed', () => {
+      const result = flatten(failure(failure('ko')));
+
+      expect(result).toEqual(failure(failure('ko')))
+    });
+  })
 });
