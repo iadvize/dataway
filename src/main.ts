@@ -81,15 +81,15 @@ export interface Success<A> {
  */
 export type Dataway<E, A> = NotAsked | Loading | Failure<E> | Success<A>;
 
-export const notAsked: Dataway<never, never> = { _tag: 'NotAsked' };
+export const notAsked: NotAsked = { _tag: 'NotAsked' };
 
-export const loading: Dataway<never, never> = { _tag: 'Loading' };
+export const loading: Loading = { _tag: 'Loading' };
 
-export function failure<E = never, A = never>(failure: E): Dataway<E, A> {
+export function failure<E = never>(failure: E): Failure<E> {
   return { _tag: 'Failure', failure };
 }
 
-export function success<E = never, A = never>(success: A): Dataway<E, A> {
+export function success<A = never>(success: A): Success<A> {
   return { _tag: 'Success', success };
 }
 
