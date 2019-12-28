@@ -1,0 +1,92 @@
+name: Documentation update
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  install:
+    name: Install
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup node
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+
+    - name: Restore node_modules
+      id: node-modules-cache
+      uses: actions/cache@v1
+      with:
+        path: node_modules
+        key: v1-${{ runner.os }}-node-modules-${{ hashFiles('package-lock.json') }}
+
+    - name: Restore npm cache
+      if: steps.node-modules-cache.outputs.cache-hit != 'true'
+      uses: actions/cache@v1
+      with:
+        path: ~/.npm
+        key: v1-${{ runner.os }}-npm-cache-${{ hashFiles('package-lock.json') }}
+        restore-keys: |
+          v1-${{ runner.os }}-npm-cache-
+
+    - run: npm install
+      if: steps.node-modules-cache.outputs.cache-hit != 'true'
+
+  generate-publish-doc:
+    name: Generate and publish doc
+    runs-on: ubuntu-latest
+
+    needs:
+      - install
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup node
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+
+    - name: Restore node_modules
+      id: node-modules-cache
+      uses: actions/cache@v1
+      with:
+        path: node_modules
+        key: v1-${{ runner.os }}-node-modules-${{ hashFiles('package-lock.json') }}
+
+    - run: npm run doc:generate
+
+    - name: Save docs artifact
+      uses: actions/upload-artifact@v1
+      with:
+        name: docs
+        path: docs
+
+    # useful to prevent infinite loop
+    - name: Check if doc changed
+      id: has-changed
+      run: |
+        CHANGED=$(git status --porcelain docs)
+
+        if [ -z "${RAW_CHANGED}" ]; then
+          echo "No documentation change. Exiting."
+
+          echo "::set-output name=changed::false"
+          exit 0
+        fi
+
+        echo "::set-output name=changed::true"
+
+    - name: Push doc changes
+      if: steps.has-changed.outputs.changed == 'true'
+      run: |
+        git add docs
+
+        git commit -m "documentation: automatic update"
+
+        git push
